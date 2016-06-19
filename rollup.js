@@ -2,6 +2,7 @@ import json from 'rollup-plugin-json';
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import replace from 'rollup-plugin-replace';
 
 export default {
   entry: 'src/index.js',
@@ -11,12 +12,15 @@ export default {
   plugins: [
     nodeResolve(),
     commonjs({
-      include: 'node_modules/**'
+      include: 'node_modules/**',
+      ignoreGlobal: true
     }),
     json(),
     babel({
-      plugins: ['external-helpers-2'],
-      externalHelpers: true
+      externalHelpers: false
+    }),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ]
 };

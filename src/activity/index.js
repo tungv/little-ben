@@ -28,3 +28,5 @@ export const reducer = combineReducers({
   activities,
   activityLog,
 });
+
+export * from './components/add_button';
