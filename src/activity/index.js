@@ -1,27 +1,30 @@
-import { createAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
+import { constant } from 'lodash';
+import { combineReducers } from 'redux';
+import type { Activity } from './types';
 
-type UnitActivity = {
-  activityType: string,
-  createdAt: date,
-  unit: string,
-  amount: number
-};
+const ACTIVITIES_ADD = 'activities/add';
+export const addActivity = createAction(ACTIVITIES_ADD, (activity: Activity) => ({
+  activity,
+}));
 
-type TimeOnlyActivity = {
-  activityType: string,
-  createdAt: date,
-}
+export const activities = constant([
+  'BREASTFEED',
+  'MILK BOTTLED',
+  'CHANGE - PEE',
+  'CHANGE - WEE',
+]);
 
-type Activity = UnitActivity | TimeOnlyActivity;
+export const activityLog = handleActions({
+  [ACTIVITIES_ADD](state, { payload }) {
+    return [
+      ...state,
+      payload.activity,
+    ];
+  },
+}, []);
 
-export const intialState = {
-  activities: [
-    'BREASTFEED',
-    'MILK BOTTLED',
-    'CHANGE - PEE',
-    'CHANGE - WEE',
-  ],
-  activity_log: [
-
-  ]
-}
+export const reducer = combineReducers({
+  activities,
+  activityLog,
+});
