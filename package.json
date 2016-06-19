@@ -1,0 +1,47 @@
+{
+  "name": "little-ben",
+  "version": "0.0.1",
+  "description": "monitor baby activities",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.13.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "recompose": "^0.20.0",
+    "redux": "^3.5.2",
+    "redux-actions": "^0.10.0"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "mocha": "^2.5.3",
+    "rollup": "^0.31.2",
+    "rollup-plugin-babel": "^2.5.1",
+    "rollup-plugin-commonjs": "^3.0.0",
+    "rollup-plugin-json": "^2.0.0",
+    "rollup-plugin-node-resolve": "^1.7.0",
+    "watch": "^0.18.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "build": "rollup -c rollup.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tungv/little-ben.git"
+  },
+  "keywords": [
+    "monitor",
+    "baby",
+    "infant"
+  ],
+  "author": "Tung Vu <me@tungv.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tungv/little-ben/issues"
+  },
+  "homepage": "https://github.com/tungv/little-ben#readme"
+}
