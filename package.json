@@ -36,7 +36,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "rollup -c rollup.js"
+    "build": "rollup -c rollup.js",
+    "build:watch": "watch 'npm run build' src/"
   },
   "repository": {
     "type": "git",
