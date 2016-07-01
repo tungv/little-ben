@@ -29,4 +29,6 @@ export const reducer = combineReducers({
   activityLog,
 });
 
-export * from './components/add_button';
+import { AddActivityContainer } from './components/container';
+
+export { AddActivityContainer };
