@@ -1,8 +1,23 @@
+import './prerequisites';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { AddActivityButton } from './activity';
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
+import { MainComponent } from './main/index.js';
 
 const mainContainer = document.getElementById('main');
-ReactDOM.render((
-  <AddActivityButton text="test" onClick={() => alert('test')} />
+render((
+  <AppContainer>
+    <MainComponent />
+  </AppContainer>
 ), mainContainer);
+
+if (module.hot) {
+  module.hot.accept('./main/index.js', () => {
+    const Reloaded = require('./main/index.js').default; // eslint-disable-line global-require
+    render((
+      <AppContainer>
+        <Reloaded />
+      </AppContainer>
+    ), mainContainer);
+  });
+}
