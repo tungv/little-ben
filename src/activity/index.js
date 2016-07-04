@@ -1,34 +1,51 @@
-import { createAction, handleActions } from 'redux-actions';
-import { constant } from 'lodash';
-import { combineReducers } from 'redux';
-import type { Activity } from './types';
+export { reducer } from './state/reducer';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 
-const ACTIVITIES_ADD = 'activities/add';
-export const addActivity = createAction(ACTIVITIES_ADD, (activity: Activity) => ({
-  activity,
-}));
+import EmptySession from './components/empty_session/empty_session';
+import TimeLine from './components/timeline/timeline';
 
-export const activities = constant([
-  'BREASTFEED',
-  'MILK BOTTLED',
-  'CHANGE - PEE',
-  'CHANGE - WEE',
-]);
+import { bindActionCreators } from 'redux';
+import * as ACTION_CREATORS from './state/actionCreators';
 
-export const activityLog = handleActions({
-  [ACTIVITIES_ADD](state, { payload }) {
-    return [
-      ...state,
-      payload.activity,
-    ];
-  },
-}, []);
+import { get } from 'lodash/fp';
 
-export const reducer = combineReducers({
-  activities,
-  activityLog,
-});
+const getDefaultVolume = get('activity.settings.defaultVolume');
 
-import { AddActivityContainer } from './components/container';
 
-export { AddActivityContainer };
+const ConnectedEmptySession = connect(
+  state => ({ defaultVolume: getDefaultVolume(state) }),
+  dispatch => ({
+    onNewSessionAdded: bindActionCreators(ACTION_CREATORS.newAndStartBottle, dispatch),
+  }),
+)(EmptySession);
+
+const ConnectedTimeLine = connect(
+  state => ({
+    sessions: state.activity.sessions,
+    currentActivity: state.activity.currentActivity,
+  }),
+  dispatch => ({
+    onPause: bindActionCreators(ACTION_CREATORS.pauseSession, dispatch),
+  }),
+)(TimeLine);
+
+const ActivityContainer = ({ hasCurrentSession }) => (
+  hasCurrentSession ?
+    <ConnectedTimeLine /> :
+    <ConnectedEmptySession />
+);
+
+ActivityContainer.propTypes = {
+  hasCurrentSession: PropTypes.bool.isRequired,
+};
+
+const wrapActivityContainer = connect(
+  state => ({
+    hasCurrentSession: state.activity.currentActivity !== null,
+  }),
+);
+
+const ConnectedActivityContainer = wrapActivityContainer(ActivityContainer);
+
+export { ConnectedActivityContainer };

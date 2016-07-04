@@ -1,4 +1,4 @@
-console.log(__dirname + '/dist/js/');
+var webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -18,7 +18,21 @@ module.exports = {
         loaders: [
           'babel',
         ]
-      }
+      },
+      {
+        test: /\.css$/,
+        loaders: [
+          'style',
+          'css?modules&camelCase&-import&localIdentName=[path][name]---[local]---[hash:base64:5]'
+        ]
+      },
+      {
+        test: /\.json$/,
+        loaders: ['json'],
+      },
     ]
-  }
+  },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(vi)$/)
+  ]
 };

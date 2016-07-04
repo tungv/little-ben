@@ -1,13 +1,12 @@
-type UnitActivity = {
-  activityType: string,
-  createdAt: Date,
-  unit: string,
-  amount: number
+export type Bottle = {
+  id: string,
+  volume: number,
 };
 
-type TimeOnlyActivity = {
-  activityType: string,
-  createdAt: Date,
-}
-
-export type Activity = UnitActivity | TimeOnlyActivity;
+export type Session = {
+  id: string,
+  activityId: string,
+  volume: ?number,
+  startTime: ?number,
+  endTime: ?number,
+};
