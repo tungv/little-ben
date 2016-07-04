@@ -41,8 +41,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "cp -r assets/ dist && webpack --progress --colors",
-    "start": "cp -r assets/ dist && webpack-dev-server --hot --progress --colors --inline --content-base dist/"
+    "asset": "cp -r assets/ dist",
+    "build": "npm run asset && webpack --progress --colors",
+    "start": "npm run asset && webpack-dev-server --hot --progress --colors --inline --content-base dist/"
   },
   "repository": {
     "type": "git",
