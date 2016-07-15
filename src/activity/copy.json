@@ -3,5 +3,6 @@
   "START_SESSION": "Bắt đầu",
   "STOP_SESSION": "Kết thúc",
   "PAUSE_SESSION": "Tạm dừng",
+  "RESUME_SESSION": "Tiếp tục",
   "PRESENT_TIME": "hiện tại"
 }

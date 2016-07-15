@@ -5,13 +5,7 @@ import { get } from 'lodash/fp';
 
 import type { Bottle, Session } from '../types';
 
-export const newBottle = createAction(
-  ACTIONS.ACTIVITIES_NEW_BOTTLE,
-  (bottle: Bottle) : Bottle => ({
-    id: uniqueId('bottle_'),
-    ...bottle,
-  })
-);
+const getCurrentSession = get('activity.sessions[0]');
 
 export const newSession = createAction(
   ACTIONS.ACTIVITIES_LOG_SESSION,
@@ -26,13 +20,40 @@ export const updateLastSession = createAction(
   (session: Session) : Session => session
 );
 
-const getCurrentSession = get('activity.sessions[0]');
+export const pauseSession = () => (dispatch, getState) => {
+  const currentSession = getCurrentSession(getState());
+
+  if (currentSession.endTime) {
+    // do nothing if it's already ended
+    return;
+  }
+
+  dispatch(updateLastSession({
+    ...currentSession,
+    endTime: Date.now(),
+  }));
+};
+
+export const newBottle = createAction(
+  ACTIONS.ACTIVITIES_NEW_BOTTLE,
+  (bottle: Bottle) : Bottle => ({
+    id: uniqueId('bottle_'),
+    done: false,
+    remaining: bottle.volume,
+    ...bottle,
+  })
+);
+
+export const updateLastBottle = createAction(
+  ACTIONS.ACTIVITIES_UPDATE_LAST_BOTTLE,
+  (bottle: Bottle) : Bottle => bottle
+);
 
 export const startBottle = () => (dispatch, getState) => {
-  const { currentActivity: { activityId } } = getState().activity;
+  const { currentActivity } = getState().activity;
 
   dispatch(newSession({
-    activityId,
+    activityId: currentActivity,
     startTime: Date.now(),
   }));
 };
@@ -42,10 +63,13 @@ export const newAndStartBottle = (bottle: Bottle) => (dispatch) => {
   dispatch(startBottle());
 };
 
-export const pauseSession = () => (dispatch, getState) => {
-  const currentSession = getCurrentSession(getState());
-  dispatch(updateLastSession({
-    ...currentSession,
-    endTime: Date.now(),
+export const completeBottle = () => (dispatch, getState) => {
+  dispatch(pauseSession);
+  const currentActivity = getState().activity.activities[0];
+
+  dispatch(updateLastBottle({
+    ...currentActivity,
+    done: true,
+    remaining: 0,
   }));
 };

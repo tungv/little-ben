@@ -8,10 +8,12 @@ import TimeLine from './components/timeline/timeline';
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
 
-import { get } from 'lodash/fp';
+import { get, takeWhile } from 'lodash/fp';
 
 const getDefaultVolume = get('activity.settings.defaultVolume');
-
+const getCurrentActivityStatus = get('activity.activities[0].done');
+const getCurrentActivityId = get('activity.activities[0].id');
+const onlyLatestActivity = activityId => takeWhile({ activityId });
 
 const ConnectedEmptySession = connect(
   state => ({ defaultVolume: getDefaultVolume(state) }),
@@ -22,11 +24,13 @@ const ConnectedEmptySession = connect(
 
 const ConnectedTimeLine = connect(
   state => ({
-    sessions: state.activity.sessions,
-    currentActivity: state.activity.currentActivity,
+    sessions: onlyLatestActivity(getCurrentActivityId(state))(state.activity.sessions),
+    currentActivity: state.activity.activities[0],
   }),
   dispatch => ({
     onPause: bindActionCreators(ACTION_CREATORS.pauseSession, dispatch),
+    onResume: bindActionCreators(ACTION_CREATORS.startBottle, dispatch),
+    onComplete: bindActionCreators(ACTION_CREATORS.completeBottle, dispatch),
   }),
 )(TimeLine);
 
@@ -42,7 +46,7 @@ ActivityContainer.propTypes = {
 
 const wrapActivityContainer = connect(
   state => ({
-    hasCurrentSession: state.activity.currentActivity !== null,
+    hasCurrentSession: getCurrentActivityStatus(state) === false,
   }),
 );
 

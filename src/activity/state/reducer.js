@@ -12,11 +12,17 @@ export const activities = handleActions({
       ...state,
     ];
   },
+  [ACTIONS.ACTIVITIES_UPDATE_LAST_BOTTLE](state, { payload } : { payload: Bottle }) : Bottle[] {
+    return [
+      payload,
+      ...state.slice(1),
+    ];
+  },
 }, []);
 
 export const currentActivity = handleActions({
-  [ACTIONS.ACTIVITIES_NEW_BOTTLE](state, { payload } : { payload: Bottle }) : ?Bottle {
-    return payload;
+  [ACTIONS.ACTIVITIES_NEW_BOTTLE](state, { payload } : { payload: ?Bottle }) : ?string {
+    return payload ? payload.id : null;
   },
 }, null);
 
