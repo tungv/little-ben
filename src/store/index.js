@@ -4,15 +4,13 @@ import { reducer } from './reducer';
 import persistState from 'redux-localstorage';
 
 import reduxThunk from 'redux-thunk';
-import createLogger from 'redux-logger';
 import { identity } from 'lodash';
 
 const DEBUG = process.env.NODE_ENV !== 'production';
 
 const initialState = {};
-const logger = DEBUG ? createLogger() : identity;
 
-const middleware = applyMiddleware(reduxThunk, logger);
+const middleware = applyMiddleware(reduxThunk);
 const devTools = window.devToolsExtension ? window.devToolsExtension() : identity;
 const persistance = DEBUG ? identity : persistState();
 

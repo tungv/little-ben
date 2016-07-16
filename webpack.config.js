@@ -1,4 +1,7 @@
 var webpack = require('webpack');
+var ClosureCompilerPlugin = require('webpack-closure-compiler');
+
+var DEBUG = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: {
@@ -34,6 +37,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(vi)$/)
+    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(vi)$/),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    !DEBUG && new ClosureCompilerPlugin()
   ]
 };
