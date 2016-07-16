@@ -1,19 +1,11 @@
 import React from 'react';
 import { ListItem } from 'material-ui/List';
 import Time from 'react-time';
-import { lifecycle, mapProps } from 'recompose';
+import { mapProps } from 'recompose';
 import * as COPY from '../../copy.json';
+import { interval } from '../../../utils/hoc/interval';
 
-const IntervalTime = lifecycle({
-  componentDidMount() {
-    this.timer = setInterval(() => {
-      this.forceUpdate();
-    }, 60e3);
-  },
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  },
-})(Time);
+const IntervalTime = interval(60e3)(Time);
 
 export const getPrimaryText = (session) => (
   <span>

@@ -1,12 +1,16 @@
 import React, { PropTypes } from 'react';
 import { List, ListItem } from 'material-ui/List';
-import { mapProps } from 'recompose';
+import { compose, mapProps } from 'recompose';
 import moment from 'moment';
+import { interval } from '../../../utils/hoc/interval';
 
-const ActivityListItem = mapProps(({ activity, ...rest }) => ({
-  primaryText: `bottle ${activity.volume} (${moment(activity.endTime).fromNow()})`,
-  ...rest,
-}))(ListItem);
+const ActivityListItem = compose(
+  interval(60e3),
+  mapProps(({ activity, ...rest }) => ({
+    primaryText: `bottle ${activity.volume} (${moment(activity.endTime).fromNow()})`,
+    ...rest,
+  })),
+)(ListItem);
 
 const ActivityTimeline = ({ activities }) => (
   <List>
