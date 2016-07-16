@@ -13,6 +13,7 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 
 import { interval } from '../../../utils/hoc/interval';
 import * as COPY from '../../copy.json';
+import styles from './activity_timeline.css';
 
 const iconButtonElement = (
   <IconButton
@@ -32,7 +33,11 @@ const ActivityListItem = compose(
     },
   }),
   mapProps(({ activity, onDelete }) => ({
-    primaryText: `bottle ${activity.volume} (${moment(activity.endTime).fromNow()})`,
+    primaryText: (<span>
+      bình <strong>{activity.volume}ml</strong>
+      &nbsp;&nbsp;&nbsp;
+      <em className={styles.endTime}>({moment(activity.endTime).fromNow()})</em>
+    </span>),
     rightIconButton: (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem
