@@ -102,12 +102,12 @@ export const selectedActivity = handleActions({
     return payload.id;
   },
   [ACTIONS.ACTIVITIES_COMPLETE_BOTTLE]() {
-    return null;
+    return '';
   },
-  [ACTIONS.ACTIVITIES_SET_CURRENT_ACTIVITY](state, { payload } : { payload : string }) : ?string {
+  [ACTIONS.ACTIVITIES_SET_CURRENT_ACTIVITY](state, { payload } : { payload : string }) : string {
     return payload;
   },
-}, null);
+}, '');
 
 export const reducer = combineReducers({
   activities,

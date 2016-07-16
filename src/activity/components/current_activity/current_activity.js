@@ -1,23 +1,40 @@
 import React, { PropTypes } from 'react';
 import { withHandlers } from 'recompose';
 import { List } from 'material-ui/List';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import DoneIcon from 'material-ui/svg-icons/action/done';
 import ActivityCard from './activity_card';
 import SessionListItem from './list-item';
 
-const CurrentActivity = ({ sessions, currentActivity, onPause, onResume, onComplete }) => (
+import styles from './current_activity.css';
+
+const CurrentActivity = ({
+  sessions,
+  currentActivity,
+  onPause,
+  onResume,
+  onComplete,
+  onClose,
+}) => (
   <div>
     <ActivityCard
       currentActivity={currentActivity}
       currentSession={sessions[0]}
       onPause={onPause}
       onResume={onResume}
-      onComplete={onComplete}
+      onEdit={onComplete}
     />
     <List>
     {
       sessions.map(session => <SessionListItem key={session.id} session={session} />)
     }
     </List>
+    <FloatingActionButton
+      className={styles.completeButton}
+      onTouchTap={currentActivity.done ? onClose : onComplete}
+    >
+      <DoneIcon />
+    </FloatingActionButton>
   </div>
 );
 
@@ -27,6 +44,7 @@ CurrentActivity.propTypes = {
   onPause: PropTypes.func.isRequired,
   onResume: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const EnhandedCurrentActivity = withHandlers({

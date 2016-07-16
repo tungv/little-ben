@@ -6,5 +6,6 @@
   "RESUME_SESSION": "Tiếp tục",
   "PRESENT_TIME": "hiện tại",
   "DELETE_ACTIVITY": "bỏ bình này",
-  "UPDATE_ACTIVITY": "sửa thông tin"
+  "UPDATE_ACTIVITY": "sửa thông tin",
+  "UPDATE_ACTIVITY_ACTION": "Sửa"
 }

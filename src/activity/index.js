@@ -8,7 +8,7 @@ import CurrentActivity from './components/current_activity/current_activity';
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
 
-import { find } from 'lodash';
+import { find, partial } from 'lodash';
 import { get, takeWhile, filter, flow } from 'lodash/fp';
 
 const getDefaultVolume = get('activity.settings.defaultVolume');
@@ -45,6 +45,8 @@ const ConnectedCurrentActivity = connect(
     onPause: bindActionCreators(ACTION_CREATORS.completeSession, dispatch),
     onResume: bindActionCreators(ACTION_CREATORS.resumeBottle, dispatch),
     onComplete: bindActionCreators(ACTION_CREATORS.completeBottle, dispatch),
+    onClose: bindActionCreators(
+      partial(ACTION_CREATORS.setCurrentActivity, ''), dispatch),
   }),
 )(CurrentActivity);
 

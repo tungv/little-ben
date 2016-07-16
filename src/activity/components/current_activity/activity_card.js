@@ -9,7 +9,7 @@ const ActivityCard = ({
   currentActivity,
   onPause,
   onResume,
-  onComplete,
+  onEdit,
 }) => (
   <Card>
     <CardHeader
@@ -18,14 +18,15 @@ const ActivityCard = ({
       avatar={<DrinkIcon style={{ width: 36, height: 36 }} />}
     />
     <CardActions>
+      {
+        currentActivity.done === false && <FlatButton
+          label={currentSession.endTime ? COPY.RESUME_SESSION : COPY.PAUSE_SESSION}
+          onTouchTap={currentSession.endTime ? onResume : onPause}
+        />
+      }
       <FlatButton
-        label={currentSession.endTime ? COPY.RESUME_SESSION : COPY.PAUSE_SESSION}
-        onTouchTap={currentSession.endTime ? onResume : onPause}
-      />
-      <FlatButton
-        secondary
-        label={COPY.STOP_SESSION}
-        onTouchTap={onComplete}
+        label={COPY.UPDATE_ACTIVITY_ACTION}
+        onTouchTap={onEdit}
       />
     </CardActions>
   </Card>
@@ -36,7 +37,7 @@ ActivityCard.propTypes = {
   currentActivity: PropTypes.object.isRequired,
   onPause: PropTypes.func.isRequired,
   onResume: PropTypes.func.isRequired,
-  onComplete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default ActivityCard;
