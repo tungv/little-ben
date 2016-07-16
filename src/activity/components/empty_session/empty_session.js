@@ -9,7 +9,13 @@ import ActivityTimeline from '../activity_timeline/activity_timeline';
 import styles from './empty_session.css';
 import * as COPY from '../../copy.json';
 
-const EmptySession = ({ handleAddButtonClick, volume, onVolumeChanged, activities }) => (
+const EmptySession = ({
+  volume,
+  handleAddButtonClick,
+  onVolumeChanged,
+  activities,
+  removeBottle,
+}) => (
   <div>
     <Paper className={styles.container}>
       <TextField
@@ -24,7 +30,7 @@ const EmptySession = ({ handleAddButtonClick, volume, onVolumeChanged, activitie
         label={COPY.START_SESSION}
       />
     </Paper>
-    <ActivityTimeline activities={activities} />
+    <ActivityTimeline activities={activities} removeBottle={removeBottle} />
   </div>
 );
 
@@ -33,6 +39,7 @@ EmptySession.propTypes = {
   volume: PropTypes.number.isRequired,
   onVolumeChanged: PropTypes.func.isRequired,
   activities: PropTypes.array.isRequired,
+  removeBottle: PropTypes.func.isRequired,
 };
 
 const EnhancedEmptySession = compose(

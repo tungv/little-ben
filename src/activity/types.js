@@ -5,6 +5,7 @@ export type Bottle = {
   done: boolean,
   startTime: number,
   endTime: ?number,
+  hidden: boolean,
 };
 
 export type Session = {

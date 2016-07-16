@@ -8,27 +8,39 @@ import CurrentActivity from './components/current_activity/current_activity';
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
 
-import { get, takeWhile } from 'lodash/fp';
+import { get, takeWhile, filter, flow } from 'lodash/fp';
 
 const getDefaultVolume = get('activity.settings.defaultVolume');
-const getCurrentActivityStatus = get('activity.activities[0].done');
-const getCurrentActivityId = get('activity.activities[0].id');
+const getActivities = flow([
+  get('activity.activities'),
+  filter({ hidden: false }),
+]);
+const getCurrentActivityStatus = flow([
+  getActivities,
+  get('[0].done'),
+]);
+const getCurrentActivityId = flow([
+  getActivities,
+  get('[0].id'),
+]);
+
 const onlyLatestActivity = activityId => takeWhile({ activityId });
 
 const ConnectedEmptySession = connect(
   state => ({
     defaultVolume: getDefaultVolume(state),
-    activities: state.activity.activities,
+    activities: getActivities(state),
   }),
   dispatch => ({
     onNewSessionAdded: bindActionCreators(ACTION_CREATORS.newAndStartBottle, dispatch),
+    removeBottle: bindActionCreators(ACTION_CREATORS.removeBottle, dispatch),
   }),
 )(EmptySession);
 
 const ConnectedCurrentActivity = connect(
   state => ({
     sessions: onlyLatestActivity(getCurrentActivityId(state))(state.activity.sessions),
-    currentActivity: state.activity.activities[0],
+    currentActivity: getActivities(state)[0],
   }),
   dispatch => ({
     onPause: bindActionCreators(ACTION_CREATORS.pauseSession, dispatch),

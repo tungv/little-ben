@@ -40,6 +40,7 @@ export const newBottle = createAction(
     id: uniqueId('bottle_'),
     done: false,
     remaining: bottle.volume,
+    hidden: false,
     ...bottle,
   })
 );
@@ -65,6 +66,11 @@ export const startBottle = () => (dispatch, getState) => {
     startTime,
   }));
 };
+
+export const removeBottle = createAction(
+  ACTIONS.ACTIVITIES_REMOVE_BOTTLE,
+  (bottleId: string) => ({ id: bottleId })
+);
 
 export const newAndStartBottle = (bottle: Bottle) => (dispatch) => {
   dispatch(newBottle(bottle));

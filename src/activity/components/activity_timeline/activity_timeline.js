@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { compose, mapProps } from 'recompose';
+import { compose, mapProps, withHandlers } from 'recompose';
 import moment from 'moment';
 
 import { List, ListItem } from 'material-ui/List';
@@ -26,13 +26,19 @@ const iconButtonElement = (
 
 const ActivityListItem = compose(
   interval(60e3),
-  mapProps(({ activity, ...rest }) => ({
+  withHandlers({
+    onDelete: props => () => {
+      props.removeBottle(props.activity.id);
+    },
+  }),
+  mapProps(({ activity, onDelete }) => ({
     primaryText: `bottle ${activity.volume} (${moment(activity.endTime).fromNow()})`,
     rightIconButton: (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem
           primaryText={COPY.DELETE_ACTIVITY}
           rightIcon={<DeleteIcon />}
+          onTouchTap={onDelete}
         />
         <MenuItem
           primaryText={COPY.UPDATE_ACTIVITY}
@@ -40,15 +46,18 @@ const ActivityListItem = compose(
         />
       </IconMenu>
     ),
-    ...rest,
   })),
 )(ListItem);
 
-const ActivityTimeline = ({ activities }) => (
+const ActivityTimeline = ({ activities, removeBottle }) => (
   <List>
   {
     activities.map(activity => (
-      <ActivityListItem key={activity.id} activity={activity} />
+      <ActivityListItem
+        key={activity.id}
+        activity={activity}
+        removeBottle={removeBottle}
+      />
     ))
   }
   </List>
@@ -56,6 +65,7 @@ const ActivityTimeline = ({ activities }) => (
 
 ActivityTimeline.propTypes = {
   activities: PropTypes.array.isRequired,
+  removeBottle: PropTypes.func.isRequired,
 };
 
 export default ActivityTimeline;
