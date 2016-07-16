@@ -17,9 +17,11 @@ const ActivityDetailDialog = ({
     open={open}
     actions={actions}
     key={`activity_${activityId || 'new'}_detail`}
+    title={COPY.DETAIL_DIALOG_TITLE}
   >
     <div>
       <TextField
+        fullWidth
         type="number"
         value={activity.volume}
         floatingLabelText={COPY.MILK_VOLUME}
@@ -70,8 +72,16 @@ const EnhancedActivityDetailDialog = compose(
       ...changes,
     },
     actions: [
-      <FlatButton label="Save" primary onTouchTap={onSubmit} disabled={isEmpty(changes)} />,
-      <FlatButton label="Close" onTouchTap={closeDialog} />,
+      <FlatButton
+        label={COPY.ACTIONS_CLOSE}
+        onTouchTap={closeDialog}
+      />,
+      <FlatButton
+        label={COPY.ACTIONS_SAVE}
+        primary
+        onTouchTap={onSubmit}
+        disabled={isEmpty(changes)}
+      />,
     ],
     ...rest,
   })),
