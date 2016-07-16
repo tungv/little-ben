@@ -41,6 +41,7 @@ const ActivityListItem = compose(
       &nbsp;&nbsp;&nbsp;
       <em className={styles.endTime}>({moment(activity.endTime).fromNow()})</em>
     </span>),
+    onTouchTap: onOpen,
     rightIconButton: (
       <IconMenu iconButtonElement={iconButtonElement}>
         <MenuItem
