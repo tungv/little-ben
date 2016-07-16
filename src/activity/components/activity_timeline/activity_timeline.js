@@ -15,6 +15,12 @@ import { interval } from '../../../utils/hoc/interval';
 import * as COPY from '../../copy.json';
 import styles from './activity_timeline.css';
 
+const getDurationDescription = ({ startTime, endTime }) : string => {
+  const start = moment(startTime);
+  const end = moment(endTime);
+  return start.to(end, true);
+};
+
 const iconButtonElement = (
   <IconButton
     touch
@@ -37,7 +43,7 @@ const ActivityListItem = compose(
   }),
   mapProps(({ activity, onDelete, onOpen }) => ({
     primaryText: (<span>
-      bình <strong>{activity.volume}ml</strong>
+      bình <strong>{activity.volume}ml</strong> trong {getDurationDescription(activity)}
       &nbsp;&nbsp;&nbsp;
       <em className={styles.endTime}>({moment(activity.endTime).fromNow()})</em>
     </span>),
