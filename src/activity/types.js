@@ -1,6 +1,7 @@
 export type Bottle = {
   id: string,
   volume: number,
+  natural: ?boolean,
   remaining: number,
   done: boolean,
   startTime: number,

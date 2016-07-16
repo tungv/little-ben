@@ -19,8 +19,8 @@ const persistance = persistState(undefined, {
 
 const enhancer = compose(
   middleware,
-  devTools,
   persistance,
+  devTools,
 );
 
 export const getStore = () => {

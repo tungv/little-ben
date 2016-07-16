@@ -39,7 +39,7 @@ const ActivityDetailDialog = ({
         fullWidth
         floatingLabelText={COPY.START_TIME}
         name="startTime"
-        value={new Date(activity.startTime)}
+        value={activity.startTime && new Date(activity.startTime)}
         onChange={onStartTimeChanged}
         format="24hr"
       />
@@ -47,7 +47,7 @@ const ActivityDetailDialog = ({
         fullWidth
         floatingLabelText={COPY.END_TIME}
         name="endTime"
-        value={new Date(activity.endTime)}
+        value={activity.endTime && new Date(activity.endTime)}
         onChange={onEndTimeChanged}
         format="24hr"
       />
