@@ -15,6 +15,7 @@ const CurrentActivity = ({
   onResume,
   onComplete,
   onClose,
+  onEdit,
 }) => (
   <div>
     <ActivityCard
@@ -22,7 +23,7 @@ const CurrentActivity = ({
       currentSession={sessions[0]}
       onPause={onPause}
       onResume={onResume}
-      onEdit={onComplete}
+      onEdit={onEdit}
     />
     <List>
     {
@@ -45,12 +46,14 @@ CurrentActivity.propTypes = {
   onResume: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 const EnhandedCurrentActivity = withHandlers({
   onPause: props => () => props.onPause(Date.now()),
   onResume: props => () => props.onResume(props.currentActivity.id),
   onComplete: props => () => props.onComplete(Date.now()),
+  onEdit: props => () => props.onEdit(props.currentActivity.id),
 })(CurrentActivity);
 
 export default EnhandedCurrentActivity;

@@ -56,6 +56,22 @@ export const activities = handleActions({
 
     return state;
   },
+  [ACTIONS.ACTIVITIES_UPDATE_BOTTLE](state, { payload }) : Bottle[] {
+    const { id, changes } : { id: string, changes: any } = payload;
+    const index = findIndex(state, { id });
+    if (index >= 0) {
+      return [
+        ...state.slice(0, index),
+        {
+          ...state[index],
+          ...changes,
+        },
+        ...state.slice(index + 1),
+      ];
+    }
+
+    return state;
+  },
 }, []);
 
 export const sessions = handleActions({
@@ -109,9 +125,16 @@ export const selectedActivity = handleActions({
   },
 }, '');
 
+export const activityInEditMode = handleActions({
+  [ACTIONS.ACTIVITIES_EDIT_ACTIVITY](state, { payload } : { payload : string }) : string {
+    return payload;
+  },
+}, '');
+
 export const reducer = combineReducers({
   activities,
   sessions,
   selectedActivity,
+  activityInEditMode,
   settings,
 });

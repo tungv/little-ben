@@ -9,6 +9,11 @@ export const setCurrentActivity = createAction(
   (activityId: string) => activityId
 );
 
+export const editActivity = createAction(
+  ACTIONS.ACTIVITIES_EDIT_ACTIVITY,
+  (activityId: string) => activityId
+);
+
 const newSession = createAction(
   ACTIONS.ACTIVITIES_LOG_SESSION,
   (session: Session) => session
@@ -22,6 +27,11 @@ export const completeSession = createAction(
 const newBottle = createAction(
   ACTIONS.ACTIVITIES_NEW_BOTTLE,
   (bottle: Bottle) => bottle
+);
+
+export const updateActivity = createAction(
+  ACTIONS.ACTIVITIES_UPDATE_BOTTLE,
+  (id: string, changes: any) => ({ id, changes }),
 );
 
 export const newAndStartBottle = ({ volume, ...rest }) => (dispatch) => {
@@ -52,10 +62,7 @@ export const resumeBottle = (bottleId: string) => newSession({
   startTime: Date.now(),
 });
 
-export const removeBottle = createAction(
-  ACTIONS.ACTIVITIES_REMOVE_BOTTLE,
-  (bottleId: string) => ({ id: bottleId })
-);
+export const removeBottle = id => updateActivity(id, { hidden: true });
 
 export const completeBottle = createAction(
   ACTIONS.ACTIVITIES_COMPLETE_BOTTLE,

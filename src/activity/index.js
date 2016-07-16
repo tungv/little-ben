@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import EmptySession from './components/empty_session/empty_session';
 import CurrentActivity from './components/current_activity/current_activity';
+import ActivityDetailDialog from './components/activity_detail/activity_detail';
 
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
@@ -32,7 +33,7 @@ const ConnectedEmptySession = connect(
   dispatch => ({
     onNewSessionAdded: bindActionCreators(ACTION_CREATORS.newAndStartBottle, dispatch),
     removeBottle: bindActionCreators(ACTION_CREATORS.removeBottle, dispatch),
-    openActivity: bindActionCreators(ACTION_CREATORS.setCurrentActivity, dispatch),
+    openActivity: bindActionCreators(ACTION_CREATORS.editActivity, dispatch),
   }),
 )(EmptySession);
 
@@ -47,13 +48,30 @@ const ConnectedCurrentActivity = connect(
     onComplete: bindActionCreators(ACTION_CREATORS.completeBottle, dispatch),
     onClose: bindActionCreators(
       partial(ACTION_CREATORS.setCurrentActivity, ''), dispatch),
+    onEdit: bindActionCreators(ACTION_CREATORS.editActivity, dispatch),
   }),
 )(CurrentActivity);
 
+const ConnectedActivityDetailDialog = connect(
+  state => ({
+    open: state.activity.activityInEditMode !== '',
+    initialActivity: find(state.activity.activities, { id: state.activity.activityInEditMode }),
+  }),
+  dispatch => ({
+    updateActivity: bindActionCreators(ACTION_CREATORS.updateActivity, dispatch),
+    closeDialog: bindActionCreators(partial(ACTION_CREATORS.editActivity, ''), dispatch),
+  }),
+)(ActivityDetailDialog);
+
 const ActivityContainer = ({ hasCurrentActivity }) => (
-  hasCurrentActivity ?
-    <ConnectedCurrentActivity /> :
-    <ConnectedEmptySession />
+  <div>
+    {
+      hasCurrentActivity ?
+        <ConnectedCurrentActivity /> :
+        <ConnectedEmptySession />
+    }
+    <ConnectedActivityDetailDialog />
+  </div>
 );
 
 ActivityContainer.propTypes = {
