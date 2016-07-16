@@ -43,7 +43,7 @@ const EnhancedEmptySession = compose(
   ),
   withHandlers({
     onVolumeChanged: props => event => {
-      props.setVolumeValue(event.target.value);
+      props.setVolumeValue(Number(event.target.value));
     },
     handleAddButtonClick: props => () => {
       props.onNewSessionAdded({ volume: props.volume });
