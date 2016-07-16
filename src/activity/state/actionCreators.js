@@ -53,10 +53,12 @@ export const startBottle = () => (dispatch, getState) => {
   const currentActivity = getState().activity.activities[0];
   const startTime = Date.now();
 
-  dispatch(updateLastBottle({
-    ...currentActivity,
-    startTime,
-  }));
+  if (!currentActivity.startTime) {
+    dispatch(updateLastBottle({
+      ...currentActivity,
+      startTime,
+    }));
+  }
 
   dispatch(newSession({
     activityId: currentActivity.id,
