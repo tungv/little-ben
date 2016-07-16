@@ -3,6 +3,9 @@ import { isEmpty } from 'lodash';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import TimePicker from 'material-ui/TimePicker';
+// import DatePicker from 'material-ui/DatePicker';
+import Checkbox from 'material-ui/Checkbox';
 import { defaultProps, setPropTypes, withState, mapProps, withHandlers, compose } from 'recompose';
 import * as COPY from '../../copy.json';
 
@@ -11,7 +14,11 @@ const ActivityDetailDialog = ({
   open,
   actions,
   activity,
+  // showAdvancedOptions,
   onVolumeChanged,
+  onStartTimeChanged,
+  onEndTimeChanged,
+  onAdvancedOptionsCheckboxChanged,
 }) => (
   <Dialog
     open={open}
@@ -23,9 +30,30 @@ const ActivityDetailDialog = ({
       <TextField
         fullWidth
         type="number"
+        name="volume"
         value={activity.volume}
         floatingLabelText={COPY.MILK_VOLUME}
         onChange={onVolumeChanged}
+      />
+      <TimePicker
+        fullWidth
+        floatingLabelText={COPY.START_TIME}
+        name="startTime"
+        value={new Date(activity.startTime)}
+        onChange={onStartTimeChanged}
+        format="24hr"
+      />
+      <TimePicker
+        fullWidth
+        floatingLabelText={COPY.END_TIME}
+        name="endTime"
+        value={new Date(activity.endTime)}
+        onChange={onEndTimeChanged}
+        format="24hr"
+      />
+      <Checkbox
+        label="Advanced options"
+        onCheck={onAdvancedOptionsCheckboxChanged}
       />
     </div>
   </Dialog>
@@ -38,6 +66,9 @@ ActivityDetailDialog.propTypes = {
   activity: PropTypes.object.isRequired,
 
   onVolumeChanged: PropTypes.func.isRequired,
+  onStartTimeChanged: PropTypes.func.isRequired,
+  onEndTimeChanged: PropTypes.func.isRequired,
+  onAdvancedOptionsCheckboxChanged: PropTypes.func.isRequired,
 };
 
 const EnhancedActivityDetailDialog = compose(
@@ -51,6 +82,7 @@ const EnhancedActivityDetailDialog = compose(
     initialActivity: {},
   }),
   withState('changes', 'setChanges', {}),
+  withState('showAdvancedOptions', 'setShowAdvancedOptions', false),
   withHandlers({
     onSubmit: ({ updateActivity, closeDialog, initialActivity, changes }) => () => {
       updateActivity(initialActivity.id, {
@@ -64,6 +96,18 @@ const EnhancedActivityDetailDialog = compose(
         volume: Number(e.target.value),
       });
     },
+    onStartTimeChanged: ({ setChanges }) => (e, date) => {
+      setChanges({
+        startTime: date.getTime(),
+      });
+    },
+    onEndTimeChanged: ({ setChanges }) => (e, date) => {
+      setChanges({
+        endTime: date.getTime(),
+      });
+    },
+    onAdvancedOptionsCheckboxChanged: ({ setShowAdvancedOptions }) => (e, checked) =>
+      setShowAdvancedOptions(checked),
   }),
   mapProps(({ initialActivity, changes, closeDialog, onSubmit, ...rest }) => ({
     activityId: initialActivity.id,

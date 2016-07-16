@@ -1,5 +1,7 @@
 {
   "MILK_VOLUME": "Dung tích sữa",
+  "START_TIME": "Thời gian bắt đầu",
+  "END_TIME": "Thời gian kết thúc",
   "START_SESSION": "Bắt đầu",
   "STOP_SESSION": "Kết thúc",
   "PAUSE_SESSION": "Tạm dừng",
