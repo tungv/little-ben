@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import EmptySession from './components/empty_session/empty_session';
-import TimeLine from './components/timeline/timeline';
+import CurrentActivity from './components/current_activity/current_activity';
 
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
@@ -22,7 +22,7 @@ const ConnectedEmptySession = connect(
   }),
 )(EmptySession);
 
-const ConnectedTimeLine = connect(
+const ConnectedCurrentActivity = connect(
   state => ({
     sessions: onlyLatestActivity(getCurrentActivityId(state))(state.activity.sessions),
     currentActivity: state.activity.activities[0],
@@ -32,11 +32,11 @@ const ConnectedTimeLine = connect(
     onResume: bindActionCreators(ACTION_CREATORS.startBottle, dispatch),
     onComplete: bindActionCreators(ACTION_CREATORS.completeBottle, dispatch),
   }),
-)(TimeLine);
+)(CurrentActivity);
 
 const ActivityContainer = ({ hasCurrentSession }) => (
   hasCurrentSession ?
-    <ConnectedTimeLine /> :
+    <ConnectedCurrentActivity /> :
     <ConnectedEmptySession />
 );
 

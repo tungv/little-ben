@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import { List } from 'material-ui/List';
-import TimelineActivityCard from './activity_card';
-import TimelineListItem from './list-item';
+import ActivityCard from './activity_card';
+import SessionListItem from './list-item';
 
-const ActivityTimeline = ({ sessions, currentActivity, onPause, onResume, onComplete }) => (
+const CurrentActivity = ({ sessions, currentActivity, onPause, onResume, onComplete }) => (
   <div>
-    <TimelineActivityCard
+    <ActivityCard
       currentActivity={currentActivity}
       currentSession={sessions[0]}
       onPause={onPause}
@@ -14,13 +14,13 @@ const ActivityTimeline = ({ sessions, currentActivity, onPause, onResume, onComp
     />
     <List>
     {
-      sessions.map(session => <TimelineListItem key={session.id} session={session} />)
+      sessions.map(session => <SessionListItem key={session.id} session={session} />)
     }
     </List>
   </div>
 );
 
-ActivityTimeline.propTypes = {
+CurrentActivity.propTypes = {
   sessions: PropTypes.array.isRequired,
   currentActivity: PropTypes.object.isRequired,
   onPause: PropTypes.func.isRequired,
@@ -28,4 +28,4 @@ ActivityTimeline.propTypes = {
   onComplete: PropTypes.func.isRequired,
 };
 
-export default ActivityTimeline;
+export default CurrentActivity;

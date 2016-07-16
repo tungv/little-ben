@@ -1,7 +1,7 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { ListItem } from 'material-ui/List';
 import Time from 'react-time';
-import { lifecycle } from 'recompose';
+import { lifecycle, mapProps } from 'recompose';
 import * as COPY from '../../copy.json';
 
 const IntervalTime = lifecycle({
@@ -23,12 +23,8 @@ export const getPrimaryText = (session) => (
   </span>
 );
 
-const TimelineListItem = ({ session }) => (
-  <ListItem primaryText={getPrimaryText(session)} />
-);
+const SessionListItem = mapProps(({ session }) => ({
+  primaryText: getPrimaryText(session),
+}))(ListItem);
 
-TimelineListItem.propTypes = {
-  session: PropTypes.object.isRequired,
-};
-
-export default TimelineListItem;
+export default SessionListItem;

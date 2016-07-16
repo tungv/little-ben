@@ -4,7 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import DrinkIcon from 'material-ui/svg-icons/maps/local-drink';
 import * as COPY from '../../copy.json';
 
-const TimelineActivityCard = ({
+const ActivityCard = ({
   currentSession,
   currentActivity,
   onPause,
@@ -31,7 +31,7 @@ const TimelineActivityCard = ({
   </Card>
 );
 
-TimelineActivityCard.propTypes = {
+ActivityCard.propTypes = {
   currentSession: PropTypes.object.isRequired,
   currentActivity: PropTypes.object.isRequired,
   onPause: PropTypes.func.isRequired,
@@ -39,4 +39,4 @@ TimelineActivityCard.propTypes = {
   onComplete: PropTypes.func.isRequired,
 };
 
-export default TimelineActivityCard;
+export default ActivityCard;
