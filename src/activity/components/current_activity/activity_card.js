@@ -5,7 +5,7 @@ import DrinkIcon from 'material-ui/svg-icons/maps/local-drink';
 import * as COPY from '../../copy.json';
 
 const ActivityCard = ({
-  currentSession,
+  currentSession = {},
   currentActivity,
   onPause,
   onResume,
