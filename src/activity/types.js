@@ -3,12 +3,14 @@ export type Bottle = {
   volume: number,
   remaining: number,
   done: boolean,
+  startTime: number,
+  endTime: ?number,
 };
 
 export type Session = {
   id: string,
   activityId: string,
   volume: ?number,
-  startTime: ?number,
+  startTime: number,
   endTime: ?number,
 };

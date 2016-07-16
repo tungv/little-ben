@@ -1,31 +1,38 @@
 import React, { PropTypes } from 'react';
+import { compose, withHandlers, withState } from 'recompose';
+
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import ActivityTimeline from '../activity_timeline/activity_timeline';
+
 import styles from './empty_session.css';
-import { compose, withHandlers, withState } from 'recompose';
 import * as COPY from '../../copy.json';
 
-const EmptySession = ({ handleAddButtonClick, volume, onVolumeChanged }) => (
-  <Paper className={styles.container}>
-    <TextField
-      type="number"
-      floatingLabelText={COPY.MILK_VOLUME}
-      value={volume}
-      onChange={onVolumeChanged}
-    />
-    <RaisedButton
-      onTouchTap={handleAddButtonClick}
-      primary
-      label={COPY.START_SESSION}
-    />
-  </Paper>
+const EmptySession = ({ handleAddButtonClick, volume, onVolumeChanged, activities }) => (
+  <div>
+    <Paper className={styles.container}>
+      <TextField
+        type="number"
+        floatingLabelText={COPY.MILK_VOLUME}
+        value={volume}
+        onChange={onVolumeChanged}
+      />
+      <RaisedButton
+        onTouchTap={handleAddButtonClick}
+        primary
+        label={COPY.START_SESSION}
+      />
+    </Paper>
+    <ActivityTimeline activities={activities} />
+  </div>
 );
 
 EmptySession.propTypes = {
   handleAddButtonClick: PropTypes.func.isRequired,
   volume: PropTypes.number.isRequired,
   onVolumeChanged: PropTypes.func.isRequired,
+  activities: PropTypes.array.isRequired,
 };
 
 const EnhancedEmptySession = compose(

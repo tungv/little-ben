@@ -50,11 +50,17 @@ export const updateLastBottle = createAction(
 );
 
 export const startBottle = () => (dispatch, getState) => {
-  const { currentActivity } = getState().activity;
+  const currentActivity = getState().activity.activities[0];
+  const startTime = Date.now();
+
+  dispatch(updateLastBottle({
+    ...currentActivity,
+    startTime,
+  }));
 
   dispatch(newSession({
-    activityId: currentActivity,
-    startTime: Date.now(),
+    activityId: currentActivity.id,
+    startTime,
   }));
 };
 
@@ -71,5 +77,6 @@ export const completeBottle = () => (dispatch, getState) => {
     ...currentActivity,
     done: true,
     remaining: 0,
+    endTime: Date.now(),
   }));
 };

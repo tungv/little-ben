@@ -16,7 +16,10 @@ const getCurrentActivityId = get('activity.activities[0].id');
 const onlyLatestActivity = activityId => takeWhile({ activityId });
 
 const ConnectedEmptySession = connect(
-  state => ({ defaultVolume: getDefaultVolume(state) }),
+  state => ({
+    defaultVolume: getDefaultVolume(state),
+    activities: state.activity.activities,
+  }),
   dispatch => ({
     onNewSessionAdded: bindActionCreators(ACTION_CREATORS.newAndStartBottle, dispatch),
   }),
