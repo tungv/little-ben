@@ -56,7 +56,7 @@
   "scripts": {
     "test": "mocha",
     "asset": "cp -r assets/ dist",
-    "build": "npm run asset && webpack --progress --colors",
+    "build": "npm run asset && NODE_ENV=production webpack --progress --colors",
     "start": "npm run asset && webpack-dev-server --hot --progress --colors --inline --content-base dist/"
   },
   "repository": {

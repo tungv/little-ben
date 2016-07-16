@@ -4,5 +4,7 @@
   "STOP_SESSION": "Kết thúc",
   "PAUSE_SESSION": "Tạm dừng",
   "RESUME_SESSION": "Tiếp tục",
-  "PRESENT_TIME": "hiện tại"
+  "PRESENT_TIME": "hiện tại",
+  "DELETE_ACTIVITY": "bỏ bình này",
+  "UPDATE_ACTIVITY": "sửa thông tin"
 }
