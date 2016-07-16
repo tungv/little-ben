@@ -43,8 +43,8 @@ const ConnectedCurrentActivity = connect(
     currentActivity: getActivities(state)[0],
   }),
   dispatch => ({
-    onPause: bindActionCreators(ACTION_CREATORS.pauseSession, dispatch),
-    onResume: bindActionCreators(ACTION_CREATORS.startBottle, dispatch),
+    onPause: bindActionCreators(ACTION_CREATORS.completeSession, dispatch),
+    onResume: bindActionCreators(ACTION_CREATORS.resumeBottle, dispatch),
     onComplete: bindActionCreators(ACTION_CREATORS.completeBottle, dispatch),
   }),
 )(CurrentActivity);

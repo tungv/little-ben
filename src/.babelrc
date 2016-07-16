@@ -2,6 +2,11 @@
   "presets": ["react", "es2015-loose", "stage-0"],
   "plugins": [
     "lodash",
+    ["typecheck", {
+      "disable": {
+        "production": true
+      }
+    }]
   ],
   "env": {
     "development": {

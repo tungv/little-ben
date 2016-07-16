@@ -13,7 +13,29 @@ export const activities = handleActions({
       ...state,
     ];
   },
+  [ACTIONS.ACTIVITIES_COMPLETE_BOTTLE](
+    state,
+    { payload } : { payload : number }
+  ) : Bottle[] {
+    if (state.length === 0) {
+      return state;
+    }
+
+    return [
+      {
+        ...state[0],
+        done: true,
+        remaining: 0,
+        endTime: payload,
+      },
+      ...state.slice(1),
+    ];
+  },
   [ACTIONS.ACTIVITIES_UPDATE_LAST_BOTTLE](state, { payload } : { payload: Bottle }) : Bottle[] {
+    if (state.length === 0) {
+      return state;
+    }
+
     return [
       payload,
       ...state.slice(1),
@@ -43,9 +65,29 @@ export const sessions = handleActions({
       ...state,
     ];
   },
-  [ACTIONS.ACTIVITIES_UPDATE_LAST_SESSION](state, { payload } : { payload: Session }) : Session[] {
+  [ACTIONS.ACTIVITIES_COMPLETE_SESSION](state, { payload } : { payload : number }) : Session[] {
+    if (state.length === 0) {
+      return state;
+    }
+
     return [
-      payload,
+      {
+        ...state[0],
+        endTime: payload,
+      },
+      ...state.slice(1),
+    ];
+  },
+  [ACTIONS.ACTIVITIES_COMPLETE_BOTTLE](state, { payload } : { payload : number }) : Session[] {
+    if (state.length === 0) {
+      return state;
+    }
+
+    return [
+      {
+        ...state[0],
+        endTime: payload,
+      },
       ...state.slice(1),
     ];
   },
@@ -54,6 +96,12 @@ export const sessions = handleActions({
 export const settings = constant({
   defaultVolume: 100,
 });
+
+export const selectedActivity = handleActions({
+  [ACTIONS.ACTIVITIES_NEW_BOTTLE](state, { payload } : { payload : Bottle }) : ?string {
+    return payload.id;
+  },
+}, null);
 
 export const reducer = combineReducers({
   activities,

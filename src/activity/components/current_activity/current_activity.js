@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { withHandlers } from 'recompose';
 import { List } from 'material-ui/List';
 import ActivityCard from './activity_card';
 import SessionListItem from './list-item';
@@ -28,4 +29,10 @@ CurrentActivity.propTypes = {
   onComplete: PropTypes.func.isRequired,
 };
 
-export default CurrentActivity;
+const EnhandedCurrentActivity = withHandlers({
+  onPause: props => () => props.onPause(Date.now()),
+  onResume: props => () => props.onResume(props.currentActivity.id),
+  onComplete: props => () => props.onComplete(Date.now()),
+})(CurrentActivity);
+
+export default EnhandedCurrentActivity;
