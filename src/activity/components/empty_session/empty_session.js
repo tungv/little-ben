@@ -15,6 +15,7 @@ const EmptySession = ({
   onVolumeChanged,
   activities,
   removeBottle,
+  openActivity,
 }) => (
   <div>
     <Paper className={styles.container}>
@@ -30,7 +31,11 @@ const EmptySession = ({
         label={COPY.START_SESSION}
       />
     </Paper>
-    <ActivityTimeline activities={activities} removeBottle={removeBottle} />
+    <ActivityTimeline
+      activities={activities}
+      removeBottle={removeBottle}
+      openActivity={openActivity}
+    />
   </div>
 );
 
@@ -40,6 +45,7 @@ EmptySession.propTypes = {
   onVolumeChanged: PropTypes.func.isRequired,
   activities: PropTypes.array.isRequired,
   removeBottle: PropTypes.func.isRequired,
+  openActivity: PropTypes.func.isRequired,
 };
 
 const EnhancedEmptySession = compose(

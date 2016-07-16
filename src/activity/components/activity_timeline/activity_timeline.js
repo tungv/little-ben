@@ -31,8 +31,11 @@ const ActivityListItem = compose(
     onDelete: props => () => {
       props.removeBottle(props.activity.id);
     },
+    onOpen: props => () => {
+      props.openActivity(props.activity.id);
+    },
   }),
-  mapProps(({ activity, onDelete }) => ({
+  mapProps(({ activity, onDelete, onOpen }) => ({
     primaryText: (<span>
       bình <strong>{activity.volume}ml</strong>
       &nbsp;&nbsp;&nbsp;
@@ -48,13 +51,14 @@ const ActivityListItem = compose(
         <MenuItem
           primaryText={COPY.UPDATE_ACTIVITY}
           rightIcon={<EditIcon />}
+          onTouchTap={onOpen}
         />
       </IconMenu>
     ),
   })),
 )(ListItem);
 
-const ActivityTimeline = ({ activities, removeBottle }) => (
+const ActivityTimeline = ({ activities, removeBottle, openActivity }) => (
   <List>
   {
     activities.map(activity => (
@@ -62,6 +66,7 @@ const ActivityTimeline = ({ activities, removeBottle }) => (
         key={activity.id}
         activity={activity}
         removeBottle={removeBottle}
+        openActivity={openActivity}
       />
     ))
   }
@@ -71,6 +76,7 @@ const ActivityTimeline = ({ activities, removeBottle }) => (
 ActivityTimeline.propTypes = {
   activities: PropTypes.array.isRequired,
   removeBottle: PropTypes.func.isRequired,
+  openActivity: PropTypes.func.isRequired,
 };
 
 export default ActivityTimeline;

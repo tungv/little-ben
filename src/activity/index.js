@@ -32,6 +32,7 @@ const ConnectedEmptySession = connect(
   dispatch => ({
     onNewSessionAdded: bindActionCreators(ACTION_CREATORS.newAndStartBottle, dispatch),
     removeBottle: bindActionCreators(ACTION_CREATORS.removeBottle, dispatch),
+    openActivity: bindActionCreators(ACTION_CREATORS.setCurrentActivity, dispatch),
   }),
 )(EmptySession);
 
