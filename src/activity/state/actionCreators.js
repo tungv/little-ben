@@ -4,6 +4,11 @@ import { uniqueId } from 'lodash';
 
 import type { Bottle, Session } from '../types';
 
+export const setCurrentActivity = createAction(
+  ACTIONS.ACTIVITIES_SET_CURRENT_ACTIVITY,
+  (activityId: string) => activityId
+);
+
 const newSession = createAction(
   ACTIONS.ACTIVITIES_LOG_SESSION,
   (session: Session) => session

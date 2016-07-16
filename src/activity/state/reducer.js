@@ -98,13 +98,20 @@ export const settings = constant({
 });
 
 export const selectedActivity = handleActions({
-  [ACTIONS.ACTIVITIES_NEW_BOTTLE](state, { payload } : { payload : Bottle }) : ?string {
+  [ACTIONS.ACTIVITIES_NEW_BOTTLE](state, { payload } : { payload : Bottle }) : string {
     return payload.id;
+  },
+  [ACTIONS.ACTIVITIES_COMPLETE_BOTTLE]() {
+    return null;
+  },
+  [ACTIONS.ACTIVITIES_SET_CURRENT_ACTIVITY](state, { payload } : { payload : string }) : ?string {
+    return payload;
   },
 }, null);
 
 export const reducer = combineReducers({
   activities,
   sessions,
+  selectedActivity,
   settings,
 });

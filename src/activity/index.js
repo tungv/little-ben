@@ -8,6 +8,7 @@ import CurrentActivity from './components/current_activity/current_activity';
 import { bindActionCreators } from 'redux';
 import * as ACTION_CREATORS from './state/actionCreators';
 
+import { find } from 'lodash';
 import { get, takeWhile, filter, flow } from 'lodash/fp';
 
 const getDefaultVolume = get('activity.settings.defaultVolume');
@@ -15,10 +16,7 @@ const getActivities = flow([
   get('activity.activities'),
   filter({ hidden: false }),
 ]);
-const getCurrentActivityStatus = flow([
-  getActivities,
-  get('[0].done'),
-]);
+
 const getCurrentActivityId = flow([
   getActivities,
   get('[0].id'),
@@ -40,7 +38,7 @@ const ConnectedEmptySession = connect(
 const ConnectedCurrentActivity = connect(
   state => ({
     sessions: onlyLatestActivity(getCurrentActivityId(state))(state.activity.sessions),
-    currentActivity: getActivities(state)[0],
+    currentActivity: find(state.activity.activities, { id: state.activity.selectedActivity }),
   }),
   dispatch => ({
     onPause: bindActionCreators(ACTION_CREATORS.completeSession, dispatch),
@@ -49,19 +47,19 @@ const ConnectedCurrentActivity = connect(
   }),
 )(CurrentActivity);
 
-const ActivityContainer = ({ hasCurrentSession }) => (
-  hasCurrentSession ?
+const ActivityContainer = ({ hasCurrentActivity }) => (
+  hasCurrentActivity ?
     <ConnectedCurrentActivity /> :
     <ConnectedEmptySession />
 );
 
 ActivityContainer.propTypes = {
-  hasCurrentSession: PropTypes.bool.isRequired,
+  hasCurrentActivity: PropTypes.bool.isRequired,
 };
 
 const wrapActivityContainer = connect(
   state => ({
-    hasCurrentSession: getCurrentActivityStatus(state) === false,
+    hasCurrentActivity: !!state.activity.selectedActivity,
   }),
 );
 
