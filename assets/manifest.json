@@ -1,0 +1,14 @@
+{
+  "name": "Little Ben - Baby Activities Monitoring App",
+  "icons": [
+    {
+      "src": "images/logo-4x.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "density": 4.0
+    }
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait"
+}
