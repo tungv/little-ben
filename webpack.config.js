@@ -1,6 +1,6 @@
 var webpack = require('webpack');
 var ClosureCompilerPlugin = require('webpack-closure-compiler');
-
+var moment = require('moment');
 var DEBUG = process.env.NODE_ENV !== 'production';
 
 var config = {
@@ -39,7 +39,9 @@ var config = {
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(vi)$/),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.GIT_COMMIT': JSON.stringify(process.env.GIT_COMMIT || ''),
+      'process.env.BUILD_TIME': JSON.stringify(moment().format())
     })
   ]
 };

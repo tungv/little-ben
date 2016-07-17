@@ -1,6 +1,6 @@
 {
   "name": "little-ben",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "monitor baby activities",
   "main": "index.js",
   "dependencies": {
@@ -61,7 +61,7 @@
   "scripts": {
     "test": "mocha",
     "asset": "cp -r assets/ dist",
-    "build": "npm run asset && NODE_ENV=production webpack --progress --colors",
+    "build": "npm run asset && NODE_ENV=production GIT_COMMIT=`git rev-parse HEAD` webpack --progress --colors",
     "start": "npm run asset && webpack-dev-server --hot --progress --colors --inline --content-base dist/"
   },
   "repository": {
