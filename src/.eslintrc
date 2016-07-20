@@ -3,9 +3,35 @@
     "mocha": true
   },
   "parser": "babel-eslint",
+  "extends": "airbnb",
   "plugins": [
     "flowtype",
+    "immutable",
     "mocha"
   ],
-  "extends": "airbnb"
+  "rules": {
+    "no-var": 2,
+    "prefer-const": 2,
+    "no-undef": 2,
+    "no-unused-vars": 2,
+    "immutable/no-let": 2,
+    "immutable/no-this": 2,
+    "immutable/no-mutation": 2,
+    "flowtype/require-parameter-type": 1,
+    "flowtype/require-return-type": [
+      1,
+      "always",
+      {
+          "annotateUndefined": "never"
+      }
+    ],
+    "flowtype/space-after-type-colon": [1, "always"],
+    "flowtype/space-before-type-colon": [1, "never"],
+    "flowtype/type-id-match": [1, "^([A-Z][a-z0-9]+)+Type$"]
+  },
+  "settings": {
+      "flowtype": {
+          "onlyFilesWithFlowAnnotation": false
+      }
+  },
 }

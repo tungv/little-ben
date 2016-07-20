@@ -4,7 +4,7 @@ var nodeExternals = require('webpack-node-externals');
 var moment = require('moment');
 
 var config = {
-  target: 'node',
+  target: 'web',
   output: {
     // sourcemap support for IntelliJ/Webstorm
     devtoolModuleFilenameTemplate: '[absolute-resource-path]',
@@ -15,6 +15,18 @@ var config = {
     nodeExternals(),
   ],
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: [
+          /node_modules/,
+          /\-test\.js$/
+        ],
+        loaders: [
+          'eslint',
+        ]
+      }
+    ],
     loaders: [
       {
         test: /\.jsx?$/,

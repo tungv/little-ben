@@ -1,4 +1,5 @@
 --colors
 --require source-map-support/register
+--require test/helper.js
 --webpack-config webpack.config-test.js
 src/**/*-test.js
