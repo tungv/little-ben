@@ -1,4 +1,4 @@
-import initializeApp from './firebase.js';
+import initializeApp from './index.js';
 import config from '../config/firebase.js';
 import { expect } from 'chai';
 

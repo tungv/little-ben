@@ -6,10 +6,19 @@ import Redbox from 'redbox-react';
 import { MainComponent } from './main/index.js';
 import { getStore } from './store';
 import moment from 'moment';
-
+import initializeApp, { FirebaseUserType } from './firebase';
+import firebaseConfig from './config/firebase';
 moment.locale('vi');
 
 const store = getStore();
+
+initializeApp(firebaseConfig, 'little-ben')
+  .then(({ user }: { user: ?FirebaseUserType }) => {
+    store.dispatch({
+      type: 'USER/loggedIn',
+      payload: user,
+    });
+  });
 
 const mainContainer = document.getElementById('main');
 render((
