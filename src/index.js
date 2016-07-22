@@ -7,7 +7,8 @@ import Redbox from 'redbox-react';
 import { MainComponent } from './main/index.js';
 import { getStore } from './store';
 import moment from 'moment';
-import initFirebase, { authenticate, FirebaseAppType, FirebaseUserType } from './firebase';
+import initFirebase, { authenticate } from './firebase';
+import type { FirebaseAppType, FirebaseUserType } from './firebase/types';
 import firebaseConfig from './config/firebase';
 import { subscribeToFirebase } from './firebase/state/subscriptions';
 
@@ -25,7 +26,7 @@ initFirebase(firebaseConfig)
       payload: user,
     });
 
-    // eslint-disable-next-line
+    // eslint-disable-next-line immutable/no-let
     let subscription = subscribeToFirebase(app)(store.dispatch);
 
     if (module.hot) {

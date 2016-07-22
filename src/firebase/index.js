@@ -1,21 +1,11 @@
 import firebase from 'firebase';
-
-type FirebaseConfigType = {
-  apiKey: string,
-  authDomain: string,
-  databaseURL: string,
-};
-
-export type FirebaseAppType = {
-  name: string,
-  auth: Function,
-  database: Function,
-  delete: Function,
-};
-
-export type FirebaseAuthProviderType = any;
-
-export type FirebaseUserType = any;
+export { default as reducer } from './state/reducer';
+import type {
+  FirebaseConfigType,
+  FirebaseAppType,
+  FirebaseAuthProviderType,
+  FirebaseUserType,
+} from './types';
 
 const getProvider = () : FirebaseAuthProviderType
   => new firebase.auth.FacebookAuthProvider();
@@ -28,7 +18,7 @@ export const authenticate = async (app: FirebaseAppType): FirebaseAppType => {
 
   try {
     const result = await auth.getRedirectResult();
-    const user = result.user;
+    const user : FirebaseUserType = result.user;
 
     if (!user) {
       // not logged in yet
