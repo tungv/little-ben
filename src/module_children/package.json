@@ -1,0 +1,8 @@
+{
+  "name": "children module in little ben",
+  "main": "index.js",
+  "state_path": "children",
+  "actions": {
+    "SELECT_CHILDREN": "CHILDREN/select"
+  }
+}

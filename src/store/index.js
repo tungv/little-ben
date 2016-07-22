@@ -7,7 +7,6 @@ import persistState from 'redux-localstorage';
 import reduxThunk from 'redux-thunk';
 import { identity } from 'lodash';
 
-// const DEBUG = process.env.NODE_ENV !== 'production';
 
 const initialState = {};
 
@@ -17,13 +16,13 @@ const persistance = persistState(undefined, {
   key: `${name}@${version.split('.').slice(0, 2).join('.')}`,
 });
 
-const enhancer = compose(
-  middleware,
-  persistance,
-  devTools,
-);
-
 export const getStore = () => {
+  const enhancer = compose(
+    middleware,
+    persistance,
+    devTools,
+  );
+
   const store = createStore(reducer, initialState, enhancer);
 
   if (module.hot) {

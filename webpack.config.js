@@ -6,6 +6,7 @@ var DEBUG = process.env.NODE_ENV !== 'production';
 var config = {
   entry: {
     app: [
+      'babel-polyfill',
       './src/index.js'
     ]
   },
@@ -50,6 +51,10 @@ if (!DEBUG) {
   config.plugins.push(new ClosureCompilerPlugin({
     concurrency: 3
   }));
+}
+
+if (DEBUG) {
+  config.devtool = 'cheap-source-map';
 }
 
 module.exports = config;

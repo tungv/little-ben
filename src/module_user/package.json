@@ -1,0 +1,8 @@
+{
+  "name": "user module in little ben",
+  "main": "index.js",
+  "state_path": "user",
+  "actions": {
+    "LOGGED_IN": "USER/loggedIn"
+  }
+}

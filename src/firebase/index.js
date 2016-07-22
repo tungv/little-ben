@@ -20,31 +20,32 @@ export type FirebaseUserType = any;
 const getProvider = () : FirebaseAuthProviderType
   => new firebase.auth.FacebookAuthProvider();
 
-const redirect = (app: FirebaseAppType) : void => app.auth().signInWithRedirect(getProvider());
+export const authenticate = async (app: FirebaseAppType): FirebaseAppType => {
+  const auth = app.auth();
+  if (auth.currentUser) {
+    return app;
+  }
 
-const auth = async (app: FirebaseAppType): ?FirebaseUserType => {
   try {
-    const result = await app.auth().getRedirectResult();
-    const { user } = result;
+    const result = await auth.getRedirectResult();
+    const user = result.user;
+
     if (!user) {
       // not logged in yet
-      redirect(app);
+      app.auth().signInWithRedirect(getProvider());
     }
-    return user;
   } catch (error) {
     const { code, message, credential, email } = error;
     console.error('cannot authenticate', { code, message, credential, email }); // eslint-disable-line
-    return null;
   }
+  return app;
 };
 
-
-export default async function initFirebase(
-  firebaseConfig: FirebaseConfigType,
-  appName: string
-) : { user: FirebaseUserType } {
-  const app : FirebaseAppType = firebase.initializeApp(firebaseConfig, appName);
-  const user = await auth(app);
-
-  return { user };
-}
+export default (firebaseConfig: FirebaseConfigType) : Promise<FirebaseAppType> => {
+  const app = firebase.initializeApp(firebaseConfig);
+  return new Promise(resolve => {
+    app.auth().onAuthStateChanged(() => {
+      resolve(app);
+    });
+  });
+};

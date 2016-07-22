@@ -1,3 +1,4 @@
+// @flow
 import './prerequisites';
 import React from 'react';
 import { render } from 'react-dom';
@@ -6,21 +7,36 @@ import Redbox from 'redbox-react';
 import { MainComponent } from './main/index.js';
 import { getStore } from './store';
 import moment from 'moment';
-import initializeApp, { FirebaseUserType } from './firebase';
+import initFirebase, { authenticate, FirebaseAppType, FirebaseUserType } from './firebase';
 import firebaseConfig from './config/firebase';
-moment.locale('vi');
+import { subscribeToFirebase } from './firebase/state/subscriptions';
 
+moment.locale('vi');
+const mainContainer = document.getElementById('main');
 const store = getStore();
 
-initializeApp(firebaseConfig, 'little-ben')
-  .then(({ user }: { user: ?FirebaseUserType }) => {
+initFirebase(firebaseConfig)
+  .then(authenticate)
+  .then((app: FirebaseAppType) => {
+    const user: FirebaseUserType = app.auth().currentUser;
+
     store.dispatch({
       type: 'USER/loggedIn',
       payload: user,
     });
+
+    // eslint-disable-next-line
+    let subscription = subscribeToFirebase(app)(store.dispatch);
+
+    if (module.hot) {
+      module.hot.accept('./firebase/state/subscriptions', () => {
+        subscription.unsubscribe();
+        const nextsubscribeToFirebase = require('./firebase/state/subscriptions').subscribeToFirebase; // eslint-disable-line
+        subscription = nextsubscribeToFirebase(app)(store.dispatch);
+      });
+    }
   });
 
-const mainContainer = document.getElementById('main');
 render((
   <AppContainer errorReporter={Redbox}>
     <MainComponent store={store} />
@@ -29,7 +45,7 @@ render((
 
 if (module.hot) {
   module.hot.accept('./main/index.js', () => {
-    const Reloaded = require('./main/index.js').MainComponent; // eslint-disable-line global-require
+    const Reloaded = require('./main/index.js').MainComponent; // eslint-disable-line
     render((
       <AppContainer errorReporter={Redbox}>
         <Reloaded store={store} />

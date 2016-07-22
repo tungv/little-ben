@@ -6,16 +6,15 @@ describe('Firebase', () => {
   describe('# initialize', () => {
     let app;
 
-    before(() => {
-      app = initializeApp(config, 'test-app');
+    before((done) => {
+      initializeApp(config).then(_app => {
+        app = _app;
+        done()
+      });
     });
 
     after(done => {
       app.delete().then(() => done());
-    });
-
-    it('should use the given app name', () => {
-      expect(app.name).equal('test-app');
     });
 
     it('should have the given interface', () => {
