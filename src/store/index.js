@@ -1,11 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { reducer } from './reducer';
 import reduxThunk from 'redux-thunk';
+import { routerMiddleware } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 import { identity } from 'lodash';
 
 const initialState = {};
 
-const middleware = applyMiddleware(reduxThunk);
+const middleware = applyMiddleware(
+  reduxThunk,
+  routerMiddleware(browserHistory),
+);
 const devTools = window.devToolsExtension ? window.devToolsExtension() : identity;
 
 export const getStore = () => {

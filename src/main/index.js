@@ -1,3 +1,1 @@
-import MainComponent from './app-container.js';
-
-export { MainComponent };
+export { default as MainComponent } from './app-container.js';

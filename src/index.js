@@ -6,26 +6,17 @@ import { AppContainer } from 'react-hot-loader';
 import Redbox from 'redbox-react';
 import { MainComponent } from './main/index.js';
 import { getStore } from './store';
-import moment from 'moment';
 import initFirebase, { authenticate } from './firebase';
-import type { FirebaseAppType, FirebaseUserType } from './firebase/types';
+import type { FirebaseAppType } from './firebase/types';
 import firebaseConfig from './config/firebase';
 import { subscribeToFirebase } from './firebase/state/subscriptions';
 
-moment.locale('vi');
 const mainContainer = document.getElementById('main');
 const store = getStore();
 
 initFirebase(firebaseConfig)
   .then(authenticate)
   .then((app: FirebaseAppType) => {
-    const user: FirebaseUserType = app.auth().currentUser;
-
-    store.dispatch({
-      type: 'USER/loggedIn',
-      payload: user,
-    });
-
     // eslint-disable-next-line immutable/no-let
     let subscription = subscribeToFirebase(app)(store.dispatch);
 
