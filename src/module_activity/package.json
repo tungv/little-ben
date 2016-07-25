@@ -1,0 +1,8 @@
+{
+  "name": "display activities of a child",
+  "main": "index.js",
+  "state_path": "activity",
+  "actions": {
+    "SELECT_CHILDREN": "CHILDREN/select"
+  }
+}

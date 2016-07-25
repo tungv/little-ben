@@ -54,7 +54,7 @@ if (!DEBUG) {
 }
 
 if (DEBUG) {
-  config.devtool = 'cheap-source-map';
+  // config.devtool = 'cheap-source-map';
 }
 
 module.exports = config;

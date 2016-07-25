@@ -1,7 +1,7 @@
 import { select, push, selectAndPush } from './helpers.js';
 import { expect } from 'chai';
 
-describe.only('reducer helpers', () => {
+describe('reducer helpers', () => {
   describe('#select()', () => {
     it('should work without default value', () => {
       const handler = select('path');

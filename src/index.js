@@ -27,21 +27,21 @@ initFirebase(firebaseConfig)
         subscription = nextsubscribeToFirebase(app)(store.dispatch);
       });
     }
-  });
 
-render((
-  <AppContainer errorReporter={Redbox}>
-    <MainComponent store={store} />
-  </AppContainer>
-), mainContainer);
-
-if (module.hot) {
-  module.hot.accept('./main/index.js', () => {
-    const Reloaded = require('./main/index.js').MainComponent; // eslint-disable-line
     render((
       <AppContainer errorReporter={Redbox}>
-        <Reloaded store={store} />
+        <MainComponent store={store} firebaseApp={app} />
       </AppContainer>
     ), mainContainer);
+
+    if (module.hot) {
+      module.hot.accept('./main/index.js', () => {
+        const Reloaded = require('./main/index.js').MainComponent; // eslint-disable-line
+        render((
+          <AppContainer errorReporter={Redbox}>
+            <Reloaded store={store} firebaseApp={app} />
+          </AppContainer>
+        ), mainContainer);
+      });
+    }
   });
-}

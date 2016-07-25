@@ -3,6 +3,5 @@
   "main": "index.js",
   "state_path": "children",
   "actions": {
-    "SELECT_CHILDREN": "CHILDREN/select"
   }
 }

@@ -8,6 +8,8 @@ import { browserHistory } from 'react-router';
 import Router from 'react-router/lib/Router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
+import { FirebaseProvider } from '../firebase/utils/FirebaseApp';
+
 type RouteConfigType = {
   path: ?string,
   component: Object,
@@ -31,18 +33,26 @@ const routeConfig : RouteConfigType[] = [
   },
 ];
 
+const RouterFirebaseProvider = FirebaseProvider(Router);
+
 const MainComponent = ({
   store,
+  firebaseApp,
 }) => (
   <MuiThemeProvider>
     <ReduxProvider store={store}>
-      <Router history={syncHistoryWithStore(browserHistory, store)} routes={routeConfig} />
+      <RouterFirebaseProvider
+        firebaseApp={firebaseApp}
+        history={syncHistoryWithStore(browserHistory, store)}
+        routes={routeConfig}
+      />
     </ReduxProvider>
   </MuiThemeProvider>
 );
 
 MainComponent.propTypes = { // eslint-disable-line
   store: PropTypes.object.isRequired,
+  firebaseApp: PropTypes.object.isRequired,
 };
 
 export default MainComponent;

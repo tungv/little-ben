@@ -74,6 +74,7 @@ const ActivityContainer = ({ hasCurrentActivity }) => (
   </div>
 );
 
+// eslint-disable-next-line immutable/no-mutation
 ActivityContainer.propTypes = {
   hasCurrentActivity: PropTypes.bool.isRequired,
 };

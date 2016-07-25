@@ -1,19 +1,15 @@
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { merge } from 'rxjs/observable/merge';
-const ARRAY_EVENTS = ['child_added', 'child_removed', 'child_changed', 'child_moved'];
+
+const ARRAY_EVENTS = [
+  'child_added',
+  'child_removed',
+  'child_changed',
+  'child_moved',
+];
 
 const getRef = app => path => app.database().ref(path);
-
-export const getCurrentUserObservable = app =>
-  Observable.create(observer => app.auth().onAuthStateChanged(observer));
-
-export const getClockSkewObservable = app =>
-  fromEvent(
-    getRef(app)('.info/serverTimeOffset'),
-    'value',
-    snap => snap.val()
-  ).distinct();
 
 export const getObservableFromArray = (app) => (path: string) => {
   const ref = getRef(app)(path);
@@ -34,3 +30,13 @@ export const getObservableFromValue = app => (path: string) =>
     'value',
     data => ({ data, event: 'value' })
   );
+
+export const getCurrentUserObservable = app =>
+  Observable.create(observer => app.auth().onAuthStateChanged(observer));
+
+export const getClockSkewObservable = app =>
+  fromEvent(
+    getRef(app)('.info/serverTimeOffset'),
+    'value',
+    snap => snap.val()
+  ).distinct();
