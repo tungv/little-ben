@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import { partial } from 'lodash';
 import { onlyUpdateForKeys } from 'recompose';
-import { FirebaseProviderValue } from '../../../firebase/utils/FirebaseProvider';
+import { connectToValue } from '../../../firebase/utils/FirebaseProvider';
 
 // type ChildType = {
 //   name: string,
@@ -18,7 +18,7 @@ type ChildrenListPropsType = {
   goToChildPage: Function,
 };
 
-const bindChild = FirebaseProviderValue(
+const bindChild = connectToValue(
   'child',
   ({ childId }) => (childId ? `/children/${childId}` : false),
 );

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { FirebaseProviderMap } from '../../../firebase/utils/FirebaseProvider';
+import { connectToMap } from '../../../firebase/utils/FirebaseProvider';
 
 const connected = connect(
   state => ({
@@ -12,7 +12,7 @@ const connected = connect(
   })
 );
 
-const firebased = FirebaseProviderMap(
+const firebased = connectToMap(
   firebaseMap => ({
     childIdArray: Object.keys(firebaseMap),
   }),

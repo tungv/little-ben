@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
-import { ConnectedActivityContainer } from '../activity';
+import ConnectedActivityContainer from '../module_activity/components/activity_timeline/index.js';
 import { ConnectedLayoutComponent } from '../layout';
 import ConnectedChildrenList from '../module_children/components/children_list';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { browserHistory } from 'react-router';
+import { browserHistory, hashHistory } from 'react-router';
 import Router from 'react-router/lib/Router';
 import { syncHistoryWithStore } from 'react-router-redux';
+import { withFirebase } from '../firebase/utils/FirebaseProvider';
 
-import { FirebaseProvider } from '../firebase/utils/FirebaseProvider';
+const DEBUG = process.env.NODE_ENV !== 'production';
 
 type RouteConfigType = {
   path: ?string,
@@ -33,7 +34,7 @@ const routeConfig : RouteConfigType[] = [
   },
 ];
 
-const RouterFirebaseProvider = FirebaseProvider(Router);
+const RouterFirebaseProvider = withFirebase(Router);
 
 const MainComponent = ({
   store,
@@ -43,7 +44,7 @@ const MainComponent = ({
     <ReduxProvider store={store}>
       <RouterFirebaseProvider
         firebaseApp={firebaseApp}
-        history={syncHistoryWithStore(browserHistory, store)}
+        history={syncHistoryWithStore(DEBUG ? hashHistory : browserHistory, store)}
         routes={routeConfig}
       />
     </ReduxProvider>

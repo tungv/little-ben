@@ -4,6 +4,7 @@ import {
   withContext,
   mapPropsStream,
   getContext,
+  setDisplayName,
 } from 'recompose';
 
 import { valueStream } from './firebaseValueStream';
@@ -15,9 +16,12 @@ import { partition } from 'rxjs/operator/partition';
 import { mergeMap } from 'rxjs/operator/mergeMap';
 import { FromObservable } from 'rxjs/observable/FromObservable';
 
-export const FirebaseProvider = withContext({
-  firebaseApp: PropTypes.object.isRequired,
-}, ({ firebaseApp }) => ({ firebaseApp }));
+export const withFirebase = compose(
+  setDisplayName('FirebaseProvider'),
+  withContext({
+    firebaseApp: PropTypes.object.isRequired,
+  }, ({ firebaseApp }) => ({ firebaseApp }))
+);
 
 const getFirebase = getContext({
   firebaseApp: PropTypes.object.isRequired,
@@ -42,10 +46,11 @@ const injectFirebaseProps = (
   ...selector(firebaseMap),
 }));
 
-export const FirebaseProviderMap = (
+export const connectToMap = (
   selector: (map: Object) => any,
   getPath: (props: any) => string|false
 ) => compose(
+  setDisplayName('FirebaseConnectedMap'),
   getFirebase,
   mapPropsStream(reomposeProps$ => {
     const [noFirebase, hasFirebase] = partitionStreams(reomposeProps$, getPath);
@@ -60,10 +65,11 @@ export const FirebaseProviderMap = (
   }),
 );
 
-export const FirebaseProviderValue = (
+export const connectToValue = (
   propKey: string,
   getPath: (props: any) => string|false,
 ) => compose(
+  setDisplayName('FirebaseConnectedValue'),
   getFirebase,
   mapPropsStream(reomposeProps$ => {
     const selector = (obj) => ({ [propKey]: obj });

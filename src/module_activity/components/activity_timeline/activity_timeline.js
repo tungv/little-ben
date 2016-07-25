@@ -33,7 +33,7 @@ export type ActivityTimelinePropsType = {
   openActivity: Function,
 };
 
-const getDurationDescription = ({ startTime, endTime }: ActivityType) : string => {
+const getDurationDescription = ({ startTime, endTime }) : string => {
   const start = moment(startTime);
   const end = moment(endTime);
   return start.to(end, true);
