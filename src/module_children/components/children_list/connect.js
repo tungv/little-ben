@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { FirebaseProviderMap } from '../../../firebase/utils/FirebaseApp';
+import { FirebaseProviderMap } from '../../../firebase/utils/FirebaseProvider';
 
 const connected = connect(
   state => ({

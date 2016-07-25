@@ -8,7 +8,7 @@ import { browserHistory } from 'react-router';
 import Router from 'react-router/lib/Router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import { FirebaseProvider } from '../firebase/utils/FirebaseApp';
+import { FirebaseProvider } from '../firebase/utils/FirebaseProvider';
 
 type RouteConfigType = {
   path: ?string,
