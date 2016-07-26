@@ -1,5 +1,5 @@
 import { mapProps } from 'recompose';
-import { browserHistory, hashHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import Router from 'react-router/lib/Router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
@@ -8,7 +8,7 @@ import ConnectedActivityCreator from '../module_activity/components/activity_cre
 import { ConnectedLayoutComponent } from '../layout';
 import ConnectedChildrenList from '../module_children/components/children_list';
 
-const DEBUG = process.env.NODE_ENV !== 'production';
+// const DEBUG = process.env.NODE_ENV !== 'production';
 
 type RouteConfigType = {
   path: ?string,
@@ -38,7 +38,7 @@ const routeConfig : RouteConfigType[] = [
 ];
 
 const AppRouter = mapProps(({ store }) => ({
-  history: syncHistoryWithStore(DEBUG ? hashHistory : browserHistory, store),
+  history: syncHistoryWithStore(hashHistory, store),
   routes: routeConfig,
 }))(Router);
 
