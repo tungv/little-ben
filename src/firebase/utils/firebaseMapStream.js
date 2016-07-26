@@ -1,4 +1,5 @@
 import { scan } from 'rxjs/operator/scan';
+import { startWith } from 'rxjs/operator/startWith';
 import { getObservableFromArray, PathOverloadingType } from './basicStreams';
 import omit from 'lodash/omit';
 
@@ -23,5 +24,5 @@ const reduceMap = (state, next) => {
 
 export const mapStream = (app) => (path: PathOverloadingType) => {
   const array$ = getObservableFromArray(app)(path);
-  return array$::scan(reduceMap, {});
+  return array$::startWith({ event: '@@INIT' })::scan(reduceMap, {});
 };
