@@ -23,7 +23,7 @@ export const withFirebase = compose(
   }, ({ firebaseApp }) => ({ firebaseApp }))
 );
 
-const getFirebase = getContext({
+export const getFirebase = getContext({
   firebaseApp: PropTypes.object.isRequired,
 });
 

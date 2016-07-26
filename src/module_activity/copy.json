@@ -12,5 +12,6 @@
   "UPDATE_ACTIVITY_ACTION": "Sửa",
   "DETAIL_DIALOG_TITLE": "Thay đổi thông tin",
   "ACTIONS_CLOSE": "Đóng",
-  "ACTIONS_SAVE": "Lưu lại"
+  "ACTIONS_SAVE": "Lưu lại",
+  "NEW_ACTIVITY": "New Activity"
 }

@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { version } from '../../package.json';
+import styles from './layout.css';
 
 const LayoutComponent = ({
   title,
@@ -12,7 +13,7 @@ const LayoutComponent = ({
   onDrawerRequestChange,
   children,
 }) => (
-  <div>
+  <div className={styles.root}>
     <AppBar
       title={title}
       onLeftIconButtonTouchTap={onAppBarLeftMenuClick}
@@ -26,7 +27,9 @@ const LayoutComponent = ({
       <MenuItem>Commit: {process.env.GIT_COMMIT.substr(0, 6) || 'dev'}</MenuItem>
       <MenuItem>{process.env.BUILD_TIME}</MenuItem>
     </Drawer>
-    {children}
+    <div className={styles.content}>
+      {children}
+    </div>
   </div>
 );
 

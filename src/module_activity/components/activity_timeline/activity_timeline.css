@@ -1,4 +1,16 @@
-.endTime {
-  font-size: 1.2rem;
-  color: rgba(0, 0, 0, calc(4 / 7));
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.list {
+  flex: 1;
+}
+
+.footer {
+  height: 7.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
