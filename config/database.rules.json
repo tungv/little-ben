@@ -1,6 +1,23 @@
 {
-  "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+  "rules":{
+    ".write": "true",
+    "children": {
+      "$child": {
+        ".read": "root.child('user-children').child(auth.uid).child($child).exists()",
+      	".validate": "data.child('parent').val() === auth.uid"
+      }
+    },
+    "user-children": {
+      "$user": {
+        ".read": "$user === auth.uid"
+      }
+    },
+    "child-activities": {
+      "$child": {
+        ".indexOn": "hidden",
+        ".read": "root.child('user-children').child(auth.uid).child($child).exists()",
+      	".validate": "root.child('user-children').child(auth.uid).child($child).exists()"
+      }
+    }
   }
 }

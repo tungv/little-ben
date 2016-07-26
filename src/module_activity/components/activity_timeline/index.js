@@ -11,7 +11,10 @@ const connectToFirebase = connectToMap(
   (firebaseMap: any): Object => ({
     activities: map(firebaseMap, (value, key) => ({ ...value, id: key })),
   }),
-  ({ routeParams: { childId } }) => `/child-activities/${childId}`
+  ({ routeParams: { childId } }, app) => {
+    const ref = app.database().ref(`/child-activities/${childId}`);
+    return ref.orderByChild('hidden').equalTo(false);
+  },
 );
 
 const connectToRedux = connect(

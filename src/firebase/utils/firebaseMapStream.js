@@ -1,6 +1,6 @@
 import { scan } from 'rxjs/operator/scan';
-import { getObservableFromArray } from './basicStreams';
-import { omit } from 'lodash/omit';
+import { getObservableFromArray, PathOverloadingType } from './basicStreams';
+import omit from 'lodash/omit';
 
 const mapHandlers = {
   child_added: (state, { data }) => ({
@@ -21,7 +21,7 @@ const reduceMap = (state, next) => {
   return state;
 };
 
-export const mapStream = (app) => (path: string) => {
+export const mapStream = (app) => (path: PathOverloadingType) => {
   const array$ = getObservableFromArray(app)(path);
   return array$::scan(reduceMap, {});
 };

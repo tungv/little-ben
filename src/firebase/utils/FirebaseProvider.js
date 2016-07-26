@@ -9,6 +9,7 @@ import {
 
 import { valueStream } from './firebaseValueStream';
 import { mapStream } from './firebaseMapStream';
+import type { PathOverloadingType } from './basicStreams';
 
 import { merge } from 'rxjs/observable/merge';
 import { map } from 'rxjs/operator/map';
@@ -30,7 +31,7 @@ export const getFirebase = getContext({
 const partitionStreams = (reomposeProps$, getPath) =>
   FromObservable
     .create(reomposeProps$)
-    ::partition(props => !props.firebaseApp || !getPath(props));
+    ::partition(props => !props.firebaseApp || !getPath(props, props.firebaseApp));
 
 const injectDefault = selector => props => ({
   ...props,
@@ -48,7 +49,7 @@ const injectFirebaseProps = (
 
 export const connectToMap = (
   selector: (map: Object) => any,
-  getPath: (props: any) => string|false
+  getPath: (props: any) => PathOverloadingType|false
 ) => compose(
   setDisplayName('FirebaseConnectedMap'),
   getFirebase,
@@ -59,7 +60,7 @@ export const connectToMap = (
       hasFirebase::mergeMap(injectFirebaseProps(
         selector,
         getPath,
-        (props) => mapStream(props.firebaseApp)(getPath(props))
+        (props) => mapStream(props.firebaseApp)(getPath(props, props.firebaseApp))
       )),
     );
   }),
@@ -67,7 +68,7 @@ export const connectToMap = (
 
 export const connectToValue = (
   propKey: string,
-  getPath: (props: any) => string|false,
+  getPath: (props: any) => PathOverloadingType|false,
 ) => compose(
   setDisplayName('FirebaseConnectedValue'),
   getFirebase,
@@ -80,7 +81,7 @@ export const connectToValue = (
       hasFirebase::mergeMap(injectFirebaseProps(
         selector,
         getPath,
-        (props) => valueStream(props.firebaseApp)(getPath(props))
+        (props) => valueStream(props.firebaseApp)(getPath(props, props.firebaseApp))
       )),
     );
   }),

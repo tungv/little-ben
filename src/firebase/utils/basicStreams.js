@@ -9,10 +9,22 @@ const ARRAY_EVENTS = [
   'child_moved',
 ];
 
-const getRef = app => path => app.database().ref(path);
+type PathType = string;
+type RefType = {
+  path: Object
+};
+export type PathOverloadingType = PathType|RefType;
 
-export const getObservableFromArray = (app) => (path: string) => {
-  const ref = getRef(app)(path);
+const getRef = (app, path: PathOverloadingType) => {
+  if (typeof path === 'string') {
+    return app.database().ref(path);
+  }
+
+  return path;
+};
+
+export const getObservableFromArray = (app) => (path: PathOverloadingType) => {
+  const ref = getRef(app, path);
   const streams = ARRAY_EVENTS.map(event =>
     fromEvent(
       ref,
@@ -24,9 +36,9 @@ export const getObservableFromArray = (app) => (path: string) => {
   return merge(...streams);
 };
 
-export const getObservableFromValue = app => (path: string) =>
+export const getObservableFromValue = app => (path: PathOverloadingType) =>
   fromEvent(
-    getRef(app)(path),
+    getRef(app, path),
     'value',
     data => ({ data, event: 'value' })
   );
@@ -36,7 +48,7 @@ export const getCurrentUserObservable = app =>
 
 export const getClockSkewObservable = app =>
   fromEvent(
-    getRef(app)('.info/serverTimeOffset'),
+    getRef(app, '.info/serverTimeOffset'),
     'value',
     snap => snap.val()
   ).distinct();
