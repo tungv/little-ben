@@ -22,6 +22,7 @@ export type ActivityTimelinePropsType = {
   activities: ActivityType[],
   removeActivity: Function,
   openActivity: Function,
+  openCreateForm: Function,
 };
 
 // eslint-disable-next-line flowtype/require-return-type
