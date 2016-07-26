@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-// eslint-disable-next-line
-// import * as ACTION_CREATORS from '../state/action_creators';
+import { compose, lifecycle } from 'recompose';
 import ActivityTimeline from './activity_timeline';
-import { connectToMap } from '../../../firebase/utils/FirebaseProvider';
+import { connectToMap, connectToValue } from '../../../firebase/utils/FirebaseProvider';
 import { map } from 'lodash';
 import { push } from 'react-router-redux';
+import { setTitle } from '../../../layout';
 
-const connectToFirebase = connectToMap(
+const getActivities = connectToMap(
   (firebaseMap: any): Object => ({
     activities: map(firebaseMap, (value, key) => ({ ...value, id: key })),
   }),
@@ -15,6 +14,11 @@ const connectToFirebase = connectToMap(
     const ref = app.database().ref(`/child-activities/${childId}`);
     return ref.orderByChild('hidden').equalTo(false);
   },
+);
+
+const getChild = connectToValue(
+  'child',
+  ({ routeParams: { childId } }) => (childId ? `/children/${childId}/name` : false)
 );
 
 const connectToRedux = connect(
@@ -27,12 +31,20 @@ const connectToRedux = connect(
     },
     openActivity: () => console.log('openActivity'),
     openCreateForm: () => dispatch(push(`/child/${childId}/activities/create`)),
+    setTitle: title => dispatch(setTitle(title)),
   })
 );
 
 const decorator = compose(
-  connectToFirebase,
-  connectToRedux
+  getActivities,
+  getChild,
+  connectToRedux,
+  lifecycle({
+    componentDidMount() {
+      // eslint-disable-next-line immutable/no-this
+      this.props.setTitle('Activities');
+    },
+  })
 );
 
 export default decorator(ActivityTimeline);
