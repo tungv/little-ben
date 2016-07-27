@@ -1,25 +1,19 @@
 // @flow
 import React from 'react';
-import { List } from 'material-ui/List';
+import { Tabs, Tab } from 'material-ui/Tabs';
+import { compose, withHandlers, withState } from 'recompose';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import ActivityListItem from './activity_item';
+
+import type { ActivityType } from '../../types';
+import RecentTab from './recent_tab';
+import DailyTab from './daily_tab';
 
 import styles from './activity_timeline.css';
 
-export type ActivityType = {
-  id: string,
-  volume: number,
-  natural: ?boolean,
-  remaining: ?number,
-  done: boolean,
-  startTime: number,
-  endTime: ?number,
-  hidden: boolean,
-};
-
 export type ActivityTimelinePropsType = {
   activities: ActivityType[],
+  daily: Object[],
   removeActivity: Function,
   openActivity: Function,
   openCreateForm: Function,
@@ -31,21 +25,27 @@ const ActivityTimeline = ({
   removeActivity,
   openActivity,
   openCreateForm,
+  daily,
+  currentTab,
+  onTabChange,
 }: ActivityTimelinePropsType) => (
   <section className={styles.root}>
-    <List className={styles.list}>
-    {
-      // eslint-disable-next-line flowtype/require-return-type
-      activities.map((activity: ActivityType) => (
-        <ActivityListItem
-          key={activity.id}
-          activity={activity}
+    <Tabs className={styles.tabs} value={currentTab} onChange={onTabChange}>
+      <Tab label="Recently" value="recent">
+        <RecentTab
+          className={styles.tabContent}
+          activities={activities}
           removeActivity={removeActivity}
           openActivity={openActivity}
         />
-      ))
-    }
-    </List>
+      </Tab>
+      <Tab label="daily" value="daily" className={styles.tabContent}>
+        <DailyTab daily={daily} />
+      </Tab>
+      <Tab label="weekly" value="weekly" className={styles.tabContent}>
+        <span>weekly</span>
+      </Tab>
+    </Tabs>
     <footer className={styles.footer}>
       <FloatingActionButton onTouchTap={openCreateForm}>
         <ContentAdd />
@@ -54,4 +54,11 @@ const ActivityTimeline = ({
   </section>
 );
 
-export default ActivityTimeline;
+const enhance = compose(
+  withState('currentTab', 'changeTab', 'recent'),
+  withHandlers({
+    onTabChange: props => e => props.changeTab(e),
+  })
+);
+
+export default enhance(ActivityTimeline);

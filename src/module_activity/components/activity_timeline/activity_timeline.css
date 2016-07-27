@@ -4,8 +4,13 @@
   height: 100%;
 }
 
-.list {
+.tabs {
   flex: 1;
+}
+
+.tabContent {
+  overflow: auto;
+  max-height: calc(100vh - 21.6rem);
 }
 
 .footer {

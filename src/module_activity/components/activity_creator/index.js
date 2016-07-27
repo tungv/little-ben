@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
 import { compose } from 'recompose';
 
+import moment from 'moment';
+
 const mapStateToProps = () => ({
   initialActivity: {
     volume: 100,
@@ -17,7 +19,7 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
   closeDialog: () => dispatch(goBack()),
-  updateActivity: (id, activity) => {
+  updateActivity: (id, changes) => {
     const app = props.firebaseApp;
     const {
       routeParams: {
@@ -26,13 +28,21 @@ const mapDispatchToProps = (dispatch, props) => ({
       initialActivity,
     } = props;
 
-    const ref = app.database().ref(`/child-activities/${childId}`);
+    const database = app.database();
+    const ref = database.ref(`/child-activities/${childId}`);
     const postingActivity = {
       ...initialActivity,
-      ...activity,
+      ...changes,
     };
 
-    ref.push(postingActivity, (error) => console.error(error));
+    const { key } = ref.push(postingActivity);
+
+    // push to aggregation
+    const { endTime, volume } = changes;
+    const dayStamp = moment(endTime).format('YYYYMMDD');
+    const dailyPath = `/child-activities-aggregations/${childId}/daily/${dayStamp}/${key}`;
+    const dailyRef = database.ref(dailyPath);
+    dailyRef.set(volume);
   },
 });
 

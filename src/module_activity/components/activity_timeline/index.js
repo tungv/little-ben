@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 import ActivityTimeline from './activity_timeline';
 import { connectToMap, connectToValue } from '../../../firebase/utils/FirebaseProvider';
-import { map } from 'lodash';
+import { map, sum, toArray, memoize } from 'lodash';
 import { push } from 'react-router-redux';
 import { setTitle } from '../../../layout';
 
@@ -13,6 +13,31 @@ const getActivities = connectToMap(
   ({ routeParams: { childId } }, app) => {
     const ref = app.database().ref(`/child-activities/${childId}`);
     return ref.orderByChild('hidden').equalTo(false);
+  },
+);
+
+const getDailyAggregation = memoize((data) => ({
+  daily: map(data, (dayData, date) => ({
+    date,
+    dayData: {
+      volume: sum(toArray(dayData)),
+      count: Object.keys(dayData).length,
+    },
+  })).reverse(),
+}));
+
+const getDaily = connectToMap(
+  getDailyAggregation,
+  ({ routeParams: { childId } }, app) => {
+    if (!childId) {
+      return false;
+    }
+
+    const path = `/child-activities-aggregations/${childId}/daily/`;
+    return app.database()
+      .ref(path)
+      .orderByKey()
+      .limitToLast(30);
   },
 );
 
@@ -38,6 +63,7 @@ const connectToRedux = connect(
 const decorator = compose(
   getActivities,
   getChild,
+  getDaily,
   connectToRedux,
   lifecycle({
     componentDidMount() {
