@@ -1,4 +1,4 @@
-import { map, sum, toArray } from 'lodash';
+import { map, sortBy, sum, toArray } from 'lodash';
 import { get } from 'lodash/fp';
 import { connectToMap } from '../firebase/utils/FirebaseProvider';
 import type { RefOverloadingType } from '../firebase/utils/basicStreams';
@@ -14,7 +14,10 @@ const getActivitiesRef = (app, childId = false): RefOverloadingType|false => (
 
 export const getActivities = connectToMap(
   (data: any) => ({
-    activities: map(data, (value, key) => ({ ...value, id: key })),
+    activities: sortBy(
+      map(data, (value, key) => ({ ...value, id: key })),
+      'startTime'
+    ).reverse(),
   }),
   (props, app) => getActivitiesRef(app, getChildIdFromRouteParams(props)),
 );
