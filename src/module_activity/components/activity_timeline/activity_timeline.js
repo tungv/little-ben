@@ -42,9 +42,6 @@ const ActivityTimeline = ({
       <Tab label="daily" value="daily" className={styles.tabContent}>
         <DailyTab daily={daily} />
       </Tab>
-      <Tab label="weekly" value="weekly" className={styles.tabContent}>
-        <span>weekly</span>
-      </Tab>
     </Tabs>
     <footer className={styles.footer}>
       <FloatingActionButton onTouchTap={openCreateForm}>

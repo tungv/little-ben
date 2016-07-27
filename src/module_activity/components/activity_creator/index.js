@@ -3,7 +3,7 @@ import { connectToValue } from '../../../firebase/utils/FirebaseProvider';
 import { connect } from 'react-redux';
 import { goBack } from 'react-router-redux';
 import { compose } from 'recompose';
-
+import { debounce } from 'lodash';
 import moment from 'moment';
 
 const mapStateToProps = () => ({
@@ -19,7 +19,7 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch, props) => ({
   closeDialog: () => dispatch(goBack()),
-  updateActivity: (id, changes) => {
+  updateActivity: debounce((id, changes) => {
     const app = props.firebaseApp;
     const {
       routeParams: {
@@ -43,7 +43,17 @@ const mapDispatchToProps = (dispatch, props) => ({
     const dailyPath = `/child-activities-aggregations/${childId}/daily/${dayStamp}/${key}`;
     const dailyRef = database.ref(dailyPath);
     dailyRef.set(volume);
-  },
+
+    const weekStamp = moment(endTime).format('YYYYww');
+    const weeklyPath = `/child-activities-aggregations/${childId}/weekly/${weekStamp}/${key}`;
+    const weeklyRef = database.ref(weeklyPath);
+    weeklyRef.set(volume);
+
+    const monthStamp = moment(endTime).format('YYYYmm');
+    const monthlyPath = `/child-activities-aggregations/${childId}/monthly/${monthStamp}/${key}`;
+    const monthlyRef = database.ref(monthlyPath);
+    monthlyRef.set(volume);
+  }),
 });
 
 const decorator = compose(

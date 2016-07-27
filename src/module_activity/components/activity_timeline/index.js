@@ -1,45 +1,14 @@
 import { connect } from 'react-redux';
-import { compose, lifecycle } from 'recompose';
+import { omit } from 'lodash/fp';
+import { compose, lifecycle, mapProps } from 'recompose';
 import ActivityTimeline from './activity_timeline';
-import { connectToMap, connectToValue } from '../../../firebase/utils/FirebaseProvider';
-import { map, sum, toArray, memoize } from 'lodash';
+import { connectToValue } from '../../../firebase/utils/FirebaseProvider';
 import { push } from 'react-router-redux';
 import { setTitle } from '../../../layout';
 
-const getActivities = connectToMap(
-  (firebaseMap: any): Object => ({
-    activities: map(firebaseMap, (value, key) => ({ ...value, id: key })),
-  }),
-  ({ routeParams: { childId } }, app) => {
-    const ref = app.database().ref(`/child-activities/${childId}`);
-    return ref.orderByChild('hidden').equalTo(false);
-  },
-);
+import { getActivities, getDaily } from '../../firebase-activities';
 
-const getDailyAggregation = memoize((data) => ({
-  daily: map(data, (dayData, date) => ({
-    date,
-    dayData: {
-      volume: sum(toArray(dayData)),
-      count: Object.keys(dayData).length,
-    },
-  })).reverse(),
-}));
-
-const getDaily = connectToMap(
-  getDailyAggregation,
-  ({ routeParams: { childId } }, app) => {
-    if (!childId) {
-      return false;
-    }
-
-    const path = `/child-activities-aggregations/${childId}/daily/`;
-    return app.database()
-      .ref(path)
-      .orderByKey()
-      .limitToLast(30);
-  },
-);
+const omitProps = keys => mapProps(props => omit(keys, props));
 
 const getChild = connectToValue(
   'child',
@@ -65,6 +34,7 @@ const decorator = compose(
   getChild,
   getDaily,
   connectToRedux,
+  omitProps(['history', 'localtion', 'params', 'route', 'routeParams']),
   lifecycle({
     componentDidMount() {
       // eslint-disable-next-line immutable/no-this

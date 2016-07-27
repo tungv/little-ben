@@ -13,21 +13,21 @@ type PathType = string;
 type RefType = {
   path: Object
 };
-export type PathOverloadingType = PathType|RefType;
+export type RefOverloadingType = PathType|RefType;
 
-const getRef = (app, path: PathOverloadingType) => {
-  if (typeof path === 'string') {
-    return app.database().ref(path);
+const getRef = (app, ref: RefOverloadingType) => {
+  if (typeof ref === 'string') {
+    return app.database().ref(ref);
   }
 
-  return path;
+  return ref;
 };
 
-export const getObservableFromArray = (app) => (path: PathOverloadingType) => {
-  const ref = getRef(app, path);
+export const getObservableFromArray = (app) => (ref: RefOverloadingType) => {
+  const arrayRef = getRef(app, ref);
   const streams = ARRAY_EVENTS.map(event =>
     fromEvent(
-      ref,
+      arrayRef,
       event,
       data => ({ data, event })
     )
@@ -36,9 +36,9 @@ export const getObservableFromArray = (app) => (path: PathOverloadingType) => {
   return merge(...streams);
 };
 
-export const getObservableFromValue = app => (path: PathOverloadingType) =>
+export const getObservableFromValue = app => (ref: RefOverloadingType) =>
   fromEvent(
-    getRef(app, path),
+    getRef(app, ref),
     'value',
     data => ({ data, event: 'value' })
   );

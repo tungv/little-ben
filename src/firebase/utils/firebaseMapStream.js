@@ -1,6 +1,7 @@
 import { scan } from 'rxjs/operator/scan';
 import { startWith } from 'rxjs/operator/startWith';
-import { getObservableFromArray, PathOverloadingType } from './basicStreams';
+import { distinctUntilChanged } from 'rxjs/operator/distinctUntilChanged';
+import { getObservableFromArray, RefOverloadingType } from './basicStreams';
 import omit from 'lodash/omit';
 
 const mapHandlers = {
@@ -22,7 +23,7 @@ const reduceMap = (state, next) => {
   return state;
 };
 
-export const mapStream = (app) => (path: PathOverloadingType) => {
+export const mapStream = (app) => (path: RefOverloadingType) => {
   const array$ = getObservableFromArray(app)(path);
-  return array$::startWith({ event: '@@INIT' })::scan(reduceMap, {});
+  return array$::startWith({ event: '@@INIT' })::scan(reduceMap, {})::distinctUntilChanged();
 };
