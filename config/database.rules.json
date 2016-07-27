@@ -1,10 +1,10 @@
 {
-  "rules":{
+  "rules": {
     ".write": "true",
     "children": {
       "$child": {
         ".read": "root.child('user-children').child(auth.uid).child($child).exists()",
-      	".validate": "data.child('parent').val() === auth.uid"
+        ".validate": "data.child('parent').val() === auth.uid"
       }
     },
     "user-children": {
@@ -16,7 +16,13 @@
       "$child": {
         ".indexOn": "hidden",
         ".read": "root.child('user-children').child(auth.uid).child($child).exists()",
-      	".validate": "root.child('user-children').child(auth.uid).child($child).exists()"
+        ".validate": "root.child('user-children').child(auth.uid).child($child).exists()"
+      }
+    },
+    "child-activities-aggregations": {
+      "$child": {
+        ".read": "root.child('user-children').child(auth.uid).child($child).exists()",
+        ".validate": "root.child('user-children').child(auth.uid).child($child).exists()"
       }
     }
   }
