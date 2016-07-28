@@ -38,7 +38,7 @@ const ActivityListItem = compose(
   withHandlers({
     // eslint-disable-next-line
     onDelete: props => () => {
-      props.removeActivity(props.activity.id);
+      props.removeActivity(props.activity);
     },
     // eslint-disable-next-line
     onOpen: props => () => {
@@ -47,11 +47,12 @@ const ActivityListItem = compose(
   }),
   // eslint-disable-next-line flowtype/require-return-type, flowtype/require-parameter-type
   mapProps(({ activity, onDelete, onOpen }) => ({
-    primaryText: (<span>
-      bình <strong>{activity.volume}ml</strong> trong {getDurationDescription(activity)}
-      &nbsp;&nbsp;&nbsp;
-      <em className={styles.endTime}>({moment(activity.endTime).fromNow()})</em>
-    </span>),
+    primaryText: (
+      <span>
+        <strong>{activity.volume}ml</strong> sữa trong {getDurationDescription(activity)}
+      </span>
+    ),
+    secondaryText: moment(activity.endTime).calendar(),
     onTouchTap: onOpen,
     rightIconButton: (
       <IconMenu iconButtonElement={iconButtonElement}>

@@ -5,6 +5,7 @@ import ActivityTimeline from './activity_timeline';
 import { connectToValue } from '../../../firebase/utils/FirebaseProvider';
 import { push } from 'react-router-redux';
 import { setTitle } from '../../../layout';
+import moment from 'moment';
 
 import { getActivities, getDaily } from '../../firebase-activities';
 
@@ -19,9 +20,23 @@ const connectToRedux = connect(
   void 0,
   // eslint-disable-next-line
   (dispatch: Function, { routeParams: { childId }, firebaseApp }: any): Object => ({
-    removeActivity: activityId => {
-      const ref = firebaseApp.database().ref(`/child-activities/${childId}/${activityId}`);
+    removeActivity: activity => {
+      const activityId = activity.id;
+      const database = firebaseApp.database();
+      const ref = database.ref(`/child-activities/${childId}/${activityId}`);
       ref.update({ hidden: true });
+
+      const endTime = activity.endTime;
+      const dayStamp = moment(endTime).format('YYYYMMDD');
+      const weekStamp = moment(endTime).format('YYYYww');
+
+      database
+        .ref(`/child-activities-aggregations/${childId}/daily/${dayStamp}/${activityId}`)
+        .remove();
+
+      database
+        .ref(`/child-activities-aggregations/${childId}/weekly/${weekStamp}/${activityId}`)
+        .remove();
     },
     openActivity: () => console.log('openActivity'),
     openCreateForm: () => dispatch(push(`/child/${childId}/activities/create`)),

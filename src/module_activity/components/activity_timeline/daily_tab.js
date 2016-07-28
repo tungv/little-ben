@@ -7,9 +7,9 @@ import type { DailyType } from '../../types';
 const displayDate = (dateString) => moment(dateString, 'YYYYMMDD').calendar(null, {
   sameDay: '[Hôm nay]',
   nextDay: '[Ngày mai]',
-  nextWeek: 'dddd',
+  nextWeek: 'ddd',
   lastDay: '[Hôm qua]',
-  lastWeek: 'dddd [tuần trước]',
+  lastWeek: 'ddd [vừa rồi]',
   sameElse: 'DD/MM',
 });
 
