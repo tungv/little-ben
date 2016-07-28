@@ -17,7 +17,7 @@ const RecentTab = ({ className, activities, removeActivity, openActivity }) => {
   const latestActivity = activities[0];
 
   return (<List className={className}>
-    <Subheader>Lần cuối ({moment(latestActivity).fromNow()})</Subheader>
+    <Subheader>Lần cuối ({moment(latestActivity.endTime).fromNow()})</Subheader>
     <ActivityListItem
       key={latestActivity.id}
       activity={latestActivity}
