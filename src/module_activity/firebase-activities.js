@@ -1,21 +1,22 @@
-import { map, sortBy, sum, toArray } from 'lodash';
+import { map as lodashMap, sortBy, sum, toArray } from 'lodash';
 import { get } from 'lodash/fp';
 import { connectToMap } from '../firebase/utils/FirebaseProvider';
 import type { RefOverloadingType } from '../firebase/utils/basicStreams';
+import moment from 'moment';
 
 const getChildIdFromRouteParams = get('routeParams.childId');
 
 const getActivitiesRef = (app, childId = false): RefOverloadingType|false => (
   childId && app.database()
     .ref(`/child-activities/${childId}`)
-    .orderByChild('hidden')
-    .equalTo(false)
+    .orderByChild('endTime')
+    .limitToLast(6)
 );
 
 export const getActivities = connectToMap(
   (data: any) => ({
     activities: sortBy(
-      map(data, (value, key) => ({ ...value, id: key })),
+      lodashMap(data, (value, key) => ({ ...value, id: key })),
       'startTime'
     ).reverse(),
   }),
@@ -23,7 +24,7 @@ export const getActivities = connectToMap(
 );
 
 const getDailyAggregation = (data) => ({
-  daily: map(data, (dayData, date) => ({
+  daily: lodashMap(data, (dayData, date) => ({
     date,
     dayData: {
       volume: sum(toArray(dayData)),
@@ -53,7 +54,7 @@ export const getDaily = connectToMap(
 
 export const getWeekly = connectToMap(
   (data) => ({
-    weekly1: map(data, (weekData, week) => ({
+    weekly1: lodashMap(data, (weekData, week) => ({
       week,
       weekData: {
         volume: sum(toArray(weekData)),
@@ -63,3 +64,27 @@ export const getWeekly = connectToMap(
   }),
   (props, app) => getWeeklyRef(app, getChildIdFromRouteParams(props)),
 );
+
+export const hideActivity = (app, childId, activityId) => {
+  const ref = app.database().ref(`/child-activities/${childId}/${activityId}`);
+  ref.once('value', snapshot => {
+    const activity = snapshot.val();
+    const endTime = activity.endTime;
+    const dayStamp = moment(endTime).format('YYYYMMDD');
+    const weekStamp = moment(endTime).format('YYYYww');
+
+    const activityPath = `/child-activities/${childId}/${activityId}`;
+    const archivedPath = `/child-activities-archived/${childId}/${activityId}`;
+    const dayPath = `/child-activities-aggregations/${childId}/daily/${dayStamp}/${activityId}`;
+    const weekPath = `/child-activities-aggregations/${childId}/daily/${weekStamp}/${activityId}`;
+
+    const updates = ({
+      [activityPath]: null,
+      [archivedPath]: activity,
+      [dayPath]: null,
+      [weekPath]: null,
+    });
+
+    app.database().ref('/').update(updates);
+  });
+};
