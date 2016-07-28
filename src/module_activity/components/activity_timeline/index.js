@@ -8,6 +8,7 @@ import { setTitle } from '../../../layout';
 import moment from 'moment';
 
 import { getActivities, getDaily } from '../../firebase-activities';
+import * as COPY from '../../copy.json';
 
 const omitProps = keys => mapProps(props => omit(keys, props));
 
@@ -53,7 +54,7 @@ const decorator = compose(
   lifecycle({
     componentDidMount() {
       // eslint-disable-next-line immutable/no-this
-      this.props.setTitle('Activities');
+      this.props.setTitle(COPY.UI_TOP_TITLE);
     },
   })
 );

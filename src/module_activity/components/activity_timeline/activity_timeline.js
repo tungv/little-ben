@@ -9,6 +9,7 @@ import type { ActivityType } from '../../types';
 import RecentTab from './recent_tab';
 import DailyTab from './daily_tab';
 
+import * as COPY from '../../copy.json';
 import styles from './activity_timeline.css';
 
 export type ActivityTimelinePropsType = {
@@ -31,7 +32,7 @@ const ActivityTimeline = ({
 }: ActivityTimelinePropsType) => (
   <section className={styles.root}>
     <Tabs className={styles.tabs} value={currentTab} onChange={onTabChange}>
-      <Tab label="Recently" value="recent">
+      <Tab label={COPY.UI_TAB_RECENT} value="recent">
         <RecentTab
           className={styles.tabContent}
           activities={activities}
@@ -39,7 +40,7 @@ const ActivityTimeline = ({
           openActivity={openActivity}
         />
       </Tab>
-      <Tab label="daily" value="daily" className={styles.tabContent}>
+      <Tab label={COPY.UI_TAB_DAILY} value="daily" className={styles.tabContent}>
         <DailyTab daily={daily} />
       </Tab>
     </Tabs>

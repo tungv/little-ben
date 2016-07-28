@@ -13,5 +13,10 @@
   "DETAIL_DIALOG_TITLE": "Thay đổi thông tin",
   "ACTIONS_CLOSE": "Đóng",
   "ACTIONS_SAVE": "Lưu lại",
-  "NEW_ACTIVITY": "New Activity"
+  "NEW_ACTIVITY": "New Activity",
+
+  "UI_TAB_RECENT": "Gần đây",
+  "UI_TAB_DAILY": "Hằng ngày",
+  "UI_TOP_TITLE": "Hoạt động",
+  "ACTIVITIES_COUNT": "lần"
 }

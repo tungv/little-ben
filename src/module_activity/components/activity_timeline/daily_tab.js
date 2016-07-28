@@ -3,6 +3,7 @@ import { List, ListItem } from 'material-ui/List';
 import moment from 'moment';
 
 import type { DailyType } from '../../types';
+import * as COPY from '../../copy.json';
 
 const displayDate = (dateString) => moment(dateString, 'YYYYMMDD').calendar(null, {
   sameDay: '[Hôm nay]',
@@ -20,7 +21,7 @@ const DailyTab = ({ daily }) => (
       <ListItem key={eachDay.date}>
         <strong>{displayDate(eachDay.date)}</strong>
         &nbsp;&mdash;&nbsp;
-        {eachDay.dayData.volume}ml&nbsp;&nbsp;({eachDay.dayData.count} times)
+        {eachDay.dayData.volume}ml&nbsp;&nbsp;({eachDay.dayData.count} {COPY.ACTIVITIES_COUNT})
       </ListItem>
     ))
   }
